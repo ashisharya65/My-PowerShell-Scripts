@@ -2,7 +2,7 @@
     DESCRIPTION:    This script will create a Scheduled Task (which runs at User Login) that executes
                     a powershell script stored in an Azure blob storage account to import the Custom Word Template file
                     for changing the font to Arial 11. This script will do the J drive mapping.
-    AUTHOR:         Ashish Arya (ashish.arya@coforge.com)
+    AUTHOR:         Ashish Arya (ashisharya65@outlook.com)
     DATE:           20 December 2021
 #>
 
