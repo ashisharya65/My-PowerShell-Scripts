@@ -7,7 +7,7 @@
 #Loading all the Intune managed Windows 10 devices
 $Devices = Get-IntuneManagedDevice | Get-MSGraphAllPages | Where-Object {($_.operatingSystem -eq "Windows")}
 
-#Loading all the SerialNumber of the devices from SN.txt file
+#Loading all the SerialNumber of the devices from SerialNumber.txt file
 $DevicesSNList = Get-Content "C:\Users\Arya\Desktop\SerialNumber.txt"    
 
 <#
