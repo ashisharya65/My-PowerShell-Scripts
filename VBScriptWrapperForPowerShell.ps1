@@ -30,7 +30,7 @@ $taskdescription = "Schedule task for running the LogonScript"
 $VbsScript = @"
 Dim shell
 Set shell=CreateObject(`"WScript.Shell`")
-command="powershell.exe -noprofile -Command ""&((New-Object Net.WebClient).DownloadString('https://alzintunerepos.blob.core.windows.net/alzintunerepos/LogonScript.ps1'))"""
+command="powershell.exe -noprofile -Command ""&((New-Object Net.WebClient).DownloadString(''))"""
 shell.Run command,0
 "@
 
