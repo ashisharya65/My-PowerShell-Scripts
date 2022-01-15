@@ -3,7 +3,6 @@
     We are adding the management names from the MgmtNames.txt file to the devices in SerialNumber.txt file.
 #>
 
-
 #Loading all the Intune managed Windows 10 devices
 $Devices = Get-IntuneManagedDevice | Get-MSGraphAllPages | Where-Object {($_.operatingSystem -eq "Windows")}
 
@@ -19,24 +18,27 @@ $FilteredDevices = $Devices | where-object -FilterScript { $DevicesSNList -conta
 #Loading ManagementNames from the MgmtNames.txt file
 $NewManagementNames = Get-Content "C:\Users\Arya\Desktop\MgmtNames.txt"
 
-#Looping through all the devices and changing the Management names
+#Looping all the devices and changing the Management names
 for($i=0;$i-lt $NewManagementNames.Length;$i++){
-
     
+    #Current Mgmt name of the device
     $CurrentManagementName = $FilteredDevices[$i].managedDeviceName
 
+    #Creating the URI for calling the Graph API
     $DeviceID = $FilteredDevices[$i].id
     $Resource = "deviceManagement/managedDevices('$DeviceID')"
     $GraphApiVersion = "Beta"
     $URI = "https://graph.microsoft.com/$graphApiVersion/$($resource)"
     
+    # Setting the JSON payload for the request
     $JSONPayload = @"
     { managedDeviceName: "$($NewManagementNames[$i])"  
     } 
 "@
-
+    #Calling Graph Api to change the mgmt name    
     Invoke-MSGraphRequest -HttpMethod PATCH -Url $URI -content $JSONPayload -verbose
- 
+    
+    #Creating Custom Object
     $Myobject = [PSCustomObject]@{
         SerialNumber = $($FilteredDevices[$i]).SerialNumber
         OldManagementName = $CurrentManagementName
@@ -46,4 +48,5 @@ for($i=0;$i-lt $NewManagementNames.Length;$i++){
     [Array] $FinalDevices +=$MyObject
 }
 
-$FinalDevices
+#Displaying the CustomObject
+$FinalDevices.Count
