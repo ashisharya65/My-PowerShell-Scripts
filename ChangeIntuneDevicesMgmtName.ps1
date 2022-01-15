@@ -49,4 +49,4 @@ for($i=0;$i-lt $NewManagementNames.Length;$i++){
 }
 
 #Displaying the CustomObject
-$FinalDevices.Count
+$FinalDevices
