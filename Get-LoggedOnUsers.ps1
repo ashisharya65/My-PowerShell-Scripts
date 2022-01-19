@@ -7,7 +7,7 @@
     .DESCRIPTION
     Getting all the users which are logged in to the remote computers stored in a file (csv or txt).
 
-    .PARAMETER Name
+    .PARAMETER ComputerName
     Specifies the computer name.
 
     .EXAMPLE
