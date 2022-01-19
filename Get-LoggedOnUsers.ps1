@@ -22,7 +22,7 @@ function Get-LoggedOnUsers {
     [CmdletBinding()]
     param (
         [parameter(ValueFromPipeline)]
-        [string[]]$Computername
+        [string[]]$ComputerName
         
     )
     
