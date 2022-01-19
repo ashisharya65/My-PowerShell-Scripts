@@ -1,3 +1,9 @@
+
+<#
+    Script to get logged in Users on Servers store in a text file.
+#>
+
+
 function Get-LoggedOnUser {
     [CmdletBinding()]
     param (
@@ -28,7 +34,7 @@ function Get-LoggedOnUser {
 }
 write-host
 
-# You just need to enter the full path of text file having server names
+# You just need to change enter the path of text file having server names
 $Servers = get-content -path "Path of the text file which stores server names."
 
 $Servers | Get-LoggedOnUser 
