@@ -38,3 +38,6 @@ write-host
 $Servers = get-content -path "Path of the text file which stores server names."
 
 $Servers | Get-LoggedOnUser 
+
+
+
