@@ -6,7 +6,7 @@
 
     .DESCRIPTION
     Getting all the users which are logged in to the remote computers stored in a file (csv or txt).
-https://github.com/ashisharya65/Misc_Scripts/blob/main/Get-LoggedOnUsers.ps1
+
     .PARAMETER Name
     Specifies the computer name.
 
