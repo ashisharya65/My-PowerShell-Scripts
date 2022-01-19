@@ -1,8 +1,22 @@
 
 <#
-    Script to get logged in Users on Servers store in a text file.
-#>
 
+    .SYNOPSIS
+    Get all logged in users from the remote computers.
+
+    .DESCRIPTION
+    Getting all the users which are logged in to the remote computers stored in a file (csv or txt).
+https://github.com/ashisharya65/Misc_Scripts/blob/main/Get-LoggedOnUsers.ps1
+    .PARAMETER Name
+    Specifies the computer name.
+
+    .EXAMPLE
+    $Servers = get-content "Enter the Full path of the text file."
+    $Servers | Get-LoggedOnUser
+
+    Author : Ashish Arya
+    
+#>
 
 function Get-LoggedOnUsers {
     [CmdletBinding()]
@@ -11,6 +25,9 @@ function Get-LoggedOnUsers {
         [string[]]$Computername
         
     )
+    
+    Begin{}
+    
     process{
 
                 foreach ($comp in $ComputerName)
@@ -31,6 +48,7 @@ function Get-LoggedOnUsers {
                 write-host "$($AllUsernames)`n" -ForegroundColor 'Blue'
 
            }
+     End{}
 }
 write-host
 
