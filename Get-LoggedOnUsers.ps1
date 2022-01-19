@@ -65,3 +65,4 @@ write-host
 $Servers = get-content -path "Full path of the file which stores the server names."
 
 $Servers | Get-LoggedOnUsers
+
