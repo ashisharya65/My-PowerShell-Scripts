@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
 Function to add a user to an Azure AD group.
@@ -51,3 +52,5 @@ function Add-UserToAADGroup {
 }
 
 connect-AzureAD | out-null
+
+
