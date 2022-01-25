@@ -1,3 +1,4 @@
+
 <#
     .SYNOPSIS
     This is a powershell script which will programmatically interact with Intune to set the Primary usernames of the Intune devices.
@@ -350,3 +351,4 @@ Foreach ($Device in $Devices) {
     Write-Host
 
 }
+
