@@ -33,7 +33,13 @@ param(
 
 #####################################################################################################################################
 
-# Would like to thank Ben Reader (https://github.com/tabs-not-spaces) for his blog on Microsoft Graph Authentication which has helped to create this function.
+<#
+    Would like to thank Ben Reader (https://github.com/tabs-not-spaces) for his Microsoft Graph Authentication blog using this which this function was created.
+    
+    Here is the reference to the article:
+    https://powers-hell.com/2021/07/18/authenticating-to-microsoft-graph-with-powershell-(2021)
+    
+#>
 
 function Get-AuthToken {
     <#
