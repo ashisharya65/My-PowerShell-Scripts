@@ -1,18 +1,13 @@
 
 <#
-    This is a powershell script which will programmatically interact with Intune to set the Primary usernames of the Intune devices.
+    This is a script which will programmatically interact with Intune to set the Primary usernames of the Intune devices.
 
-    Microsoft has built two authentication libraries over the years to interact with Microsoft Graph API:
-        * Active Directory Authentication Library (ADAL)
-        * Microsoft Authentication Library (MSAL).
-        
     Microsoft has announced end of support timelines for ADAL,and no further feature development will take place on the library.
-     
     Here is the link for reference:
     (https://techcommunity.microsoft.com/t5/azure-active-directory-identity/update-your-applications-to-use-microsoft-authentication-library/ba-p/1257363)
                 
-    This script is a modified version of one of the script from Dave Falkus famous Intune Samples Github repo. This uses the MSAL library
-    instead of the ADAL library. The original script was using the ADAL library to get the access token.
+    This script is a modified version of one of the script from Dave Falkus famous Intune Samples Github repo. This uses the MSAL library instead of the ADAL library. 
+    The original script was using the ADAL library to get the access token.
         
     Here is the link of the original script:
 
