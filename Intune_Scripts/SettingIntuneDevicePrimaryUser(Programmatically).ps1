@@ -33,6 +33,8 @@ param(
 
 #####################################################################################################################################
 
+# Would like to thank Ben Reader (https://github.com/tabs-not-spaces) for his blog on Microsoft Graph Authentication which has helped to create this function.
+
 function Get-AuthToken {
     <#
     .SYNOPSIS
