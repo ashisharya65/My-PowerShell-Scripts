@@ -3,8 +3,8 @@
 #>
 
 #region variable decalaration
-$path1 = "$env:USERPROFILE\OneDrive\Desktop"
-$path2 = "$env:USERPROFILE\Desktop"
+$Path1 = "$env:USERPROFILE\OneDrive\Desktop"
+$Path2 = "$env:USERPROFILE\Desktop"
 $WScriptShell = New-Object -ComObject WScript.Shell
 #endregion
 
@@ -15,24 +15,24 @@ function Add-ShortCut {
         [Parameter(Mandatory)]
         [string]$ShortCutName,   
         [Parameter(Mandatory)] 
-        [string]$ShortcutUrl,       
+        [string]$ShortCutUrl,       
         [Parameter(Mandatory)]
-        [string]$ShortcutIconLocation
+        [string]$ShortCutIconLocation
     )
 
     if (test-path $path1) {
-        $Shortcut = $WScriptShell.CreateShortcut($path1 + "\$ShortcutName.lnk") 
-        $Shortcut.TargetPath = $ShortcutUrl
-        if ($ShortcutIconLocation) {
-            $Shortcut.IconLocation = $ShortcutIconLocation
+        $ShortCut = $WScriptShell.CreateShortcut($path1 + "\$ShortCutName.lnk") 
+        $ShortCut.TargetPath = $ShortCutUrl
+        if ($ShortCutIconLocation) {
+            $ShortCut.IconLocation = $ShortCutIconLocation
         } 
         $Shortcut.Save()
     }
     elseif (test-path $path2) {
-        $Shortcut = $WScriptShell.CreateShortcut($path2 + "\$ShortcutName.lnk") 
-        $Shortcut.TargetPath = $ShortcutUrl
-        if ($ShortcutIconLocation) {
-            $Shortcut.IconLocation = $ShortcutIconLocation
+        $ShortCut = $WScriptShell.CreateShortcut($path2 + "\$ShortCutName.lnk") 
+        $ShortCut.TargetPath = $ShortCutUrl
+        if ($ShortCutIconLocation) {
+            $ShortCut.IconLocation = $ShortCutIconLocation
         }
         $Shortcut.Save()
     }
@@ -55,6 +55,6 @@ $AllShortCuts =
 #region function call
 
 Foreach ($ShortCut in $AllShortCuts) {
-    Add-ShortCut -ShortCutName $ShortCut.Name -ShortcutUrl $ShortCut.Url -ShortcutIconLocation $ShortCut.IconLocation
+    Add-ShortCut -ShortCutName $ShortCut.Name -ShortCutUrl $ShortCut.Url -ShortCutIconLocation $ShortCut.IconLocation
 }
 #endregion
