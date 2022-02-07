@@ -4,6 +4,12 @@
 
 connect-msolservice
 
-Get-MsolUser -All | Select-Object DisplayName, BlockCredential, UserPrincipalName, @{N = "MFA Status"; E = { if ( $_.StrongAuthenticationRequirements.State -ne $null)`
-        { $_.StrongAuthenticationRequirements.State } else { "Disabled" } }
+Get-MsolUser -All | Select-Object DisplayName, BlockCredential, UserPrincipalName, @{N = "MFA Status"; E = { 
+        if ( $_.StrongAuthenticationRequirements.State -ne $null) { 
+            $_.StrongAuthenticationRequirements.State 
+        } 
+        else { 
+            "Disabled" 
+        } 
+    }
 } 
