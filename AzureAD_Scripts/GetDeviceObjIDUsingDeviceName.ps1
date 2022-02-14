@@ -2,6 +2,8 @@
     Getting AzureAD Devices ObjectID using their device names stored in a text file.
 #>
 
+Connect-AzureAD | out-null
+
 $Devices = Get-content "C:\Users\Ashish.Arya\Desktop\devicelist.txt"
 
 ForEach ($Device in $Devices) {
