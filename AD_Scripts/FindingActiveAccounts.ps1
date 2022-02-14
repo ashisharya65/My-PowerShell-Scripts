@@ -1,3 +1,4 @@
+
 <#
   Script to find the users (mentioned in a text file) are active or not.
 #>
@@ -10,3 +11,4 @@ $userlist | foreach-object {
         } 
     }
 } | Export-csv C:\Users\ashish.arya\Desktop\AccountStatus.csv
+
