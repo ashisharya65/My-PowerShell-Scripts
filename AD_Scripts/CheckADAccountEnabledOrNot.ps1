@@ -1,3 +1,4 @@
+
 <#
     Check whether AD users are enabled or not.
     
@@ -19,3 +20,4 @@ $users | foreach-object {
     }
 
 } | Sort UPN, Enabled
+
