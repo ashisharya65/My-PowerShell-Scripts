@@ -1,3 +1,3 @@
-# Scripts Created by My
+# My PowerShell Scripts
 
 This repo contains scripts that I have created.
