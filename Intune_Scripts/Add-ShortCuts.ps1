@@ -1,5 +1,7 @@
 <#
     This is a script to add multiple shortcuts with their URL and icon images to the Intune devices.
+    Author : Ashish Arya
+    Github : @ashisharya65
 #>
 
 #region variable decalaration
