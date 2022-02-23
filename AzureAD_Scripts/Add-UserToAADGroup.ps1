@@ -10,7 +10,9 @@ PS C:\> Add-UserToAADGroup -Username "Mark.James" -GroupName "AAD-Testgroup"
 Function will prompt you to provide username and the Azure AD group name and then will add the user to the group.
 
 Author: Ashish Arya
+Github: @ashisharya65
 #>
+
 function Add-UserToAADGroup {
     [CmdletBinding()]
     param(
