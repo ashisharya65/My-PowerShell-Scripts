@@ -1,5 +1,8 @@
 <#
     Adding AzureAD managed devices to the Azure AD group using a text file storing devices names.
+    
+    Author: Ashish Arya
+    Github: @ashisharya65
 #>
 
 $Devices = Get-content "C:\Users\Ashish.Arya\Desktop\devicelist.txt"
