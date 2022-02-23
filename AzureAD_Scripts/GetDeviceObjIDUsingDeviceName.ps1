@@ -1,5 +1,7 @@
 <#
     Getting AzureAD Devices ObjectID using their device names stored in a text file.
+    Author : Ashish Arya
+    Github : @ashisharya65
 #>
 
 Connect-AzureAD | out-null
