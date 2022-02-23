@@ -4,7 +4,7 @@
     next seven days.
     
     Author: Ashish Arya
-    Github: AshishArya_In
+    Github: @ashisharya65
 #>
 
 #region Importing AD module
