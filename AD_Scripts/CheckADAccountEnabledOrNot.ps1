@@ -5,7 +5,7 @@
     Here we have used the userlist text file which stores the user's user principal name (UPN).
     
     Author: Ashish Arya
-    Github: @AshishArya_In
+    Github: @ashisharya65
 #>
 
 $users = get-content "C:\Users\Ashish.Arya\Desktop\userlist.txt"
