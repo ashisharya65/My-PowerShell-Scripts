@@ -13,7 +13,7 @@
     $Servers | Get-LoggedOnUser
     
     Author : Ashish Arya
-    
+    Github: @ashisharya65
 #>
 
 function Get-LoggedOnUsers {
