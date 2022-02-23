@@ -1,5 +1,7 @@
 <#
     Script to get MFA status for all users in your office365 tenant.
+    Author : Ashish Arya
+    Github : @ashisharya65
 #>
 
 connect-msolservice
