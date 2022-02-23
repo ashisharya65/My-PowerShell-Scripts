@@ -1,6 +1,9 @@
 <#
     This script uses two text files called SerialNumber and MgmtNames.
     We are adding the management names from the MgmtNames.txt file to the devices in SerialNumber.txt file.
+    
+    Author : Ashish Arya
+    Github : @ashisharya65
 #>
 
 #Loading all the Intune managed Windows 10 devices
