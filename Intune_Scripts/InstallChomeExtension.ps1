@@ -1,5 +1,8 @@
 <#
     This script will be installing the High Contrast Chrome Extension
+    
+    Author : Ashish Arya
+    Github : @ashisharya65
 #>
 
 $KeyPath = "HKLM:\Software\Policies\Google\Chrome\ExtensionInstallForcelist"
