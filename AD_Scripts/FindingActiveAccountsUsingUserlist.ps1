@@ -1,6 +1,9 @@
 
 <#
   Script to find the users (mentioned in a text file) are active or not.
+  
+  Author: Ashish Arya
+  Github: @ashisharya65
 #>
 
 $userlist = get-content "C:\Users\ashish.arya\Desktop\UPNList.txt"
