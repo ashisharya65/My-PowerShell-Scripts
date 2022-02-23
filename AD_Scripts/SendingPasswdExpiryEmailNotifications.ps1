@@ -7,10 +7,10 @@
     Github: AshishArya_In
 #>
 
-#Import AD
+#region Importing AD module
 Import-Module ActiveDirectory
 
-#Email Variables
+#region Email Variables
 $MailSender = ""
 $Subject    = 'Your account password will expire soon!!!'
 $EmailStub1 = @"
