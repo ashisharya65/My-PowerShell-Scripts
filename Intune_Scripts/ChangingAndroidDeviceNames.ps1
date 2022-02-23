@@ -2,6 +2,9 @@
 <#
   * Renaming Intune Android Device names with naming convention "Android-SerialNumber".
   * Here we are filtering all the android devices using a devicelist having devicenames.
+  
+  Author : Ashish Arya
+  Github : @ashisharya65
 #>
 ################################################################################################################
 
