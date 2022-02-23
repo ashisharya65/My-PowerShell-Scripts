@@ -50,5 +50,5 @@ foreach ($user in $users) {
        $days      = $user.PasswordExpiry - (get-date)
        $WarnDate  = $user.PasswordExpiry.ToLongDateString() + "."	 
        $EmailBody = $EmailStub1,$EmailStub2,$days.Days,$EmailStub3,$WarnDate,$EmailStub4 -join ' '
-		   Send-MailMessage -To $user.EmailAddress -From $MailSender -SmtpServer $SMTPServer -Subject $Subject -Body $EmailBody -Attachments "C:\Intune_Scripts\PasswordExpiryScripts\Change_Your_Password.pdf"
+		   Send-MailMessage -To $user.EmailAddress -From $MailSender -SmtpServer $SMTPServer -Subject $Subject -Body $EmailBody -Attachments "C:\Change_Your_Password.pdf"
  }
