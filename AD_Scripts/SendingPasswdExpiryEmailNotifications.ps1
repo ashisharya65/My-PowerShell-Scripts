@@ -1,3 +1,4 @@
+
 <#
     This script can be used to send password expiry email notifications to the active users whose Active Directory account passwords are going to expire in the
     next seven days.
@@ -51,7 +52,3 @@ foreach ($user in $users) {
        $EmailBody = $EmailStub1,$EmailStub2,$days.Days,$EmailStub3,$WarnDate,$EmailStub4 -join ' '
 		   Send-MailMessage -To $user.EmailAddress -From $MailSender -SmtpServer $SMTPServer -Subject $Subject -Body $EmailBody -Attachments "C:\Intune_Scripts\PasswordExpiryScripts\Change_Your_Password.pdf"
  }
-
- 
-
- 
