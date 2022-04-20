@@ -13,19 +13,19 @@ Date   : 20-April-2022
 #>
 
 #region variables
-$RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP"
-$DesktopPath = "DesktopImagePath"
-$DesktopStatus = "DesktopImageStatus"
-$DesktopUrl = "DesktopImageUrl"
-$LockScreenPath = "LockScreenImagePath"
-$LockScreenStatus = "LockScreenImageStatus"
-$LockScreenUrl = "LockScreenImageUrl"
-$LockScreenImageURL = "Web location for lockscreen image"
-$WallpaperImageURL = "Web location for Wallpaper image"
+$RegKeyPath          = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP"
+$DesktopPath         = "DesktopImagePath"
+$DesktopStatus       = "DesktopImageStatus"
+$DesktopUrl          = "DesktopImageUrl"
+$LockScreenPath      = "LockScreenImagePath"
+$LockScreenStatus    = "LockScreenImageStatus"
+$LockScreenUrl       = "LockScreenImageUrl"
+$LockScreenImageURL  = "Web location for LockScreen Image"
+$WallpaperImageURL   = "Web location for Wallpaper Image"
 $LocalScreenImageloc = "C:\Windows\Personalization\LockScreenImage\Lockscreen.jpg"
-$WallpaperImageloc = "C:\Windows\Personalization\DesktopImage\Wallpaper.jpg"
-$StatusValue = "1"
-$WallpaperDirectory = "C:\Windows\Personalization\DesktopImage"
+$WallpaperImageloc   = "C:\Windows\Personalization\DesktopImage\Wallpaper.jpg"
+$StatusValue         = "1"
+$WallpaperDirectory  = "C:\Windows\Personalization\DesktopImage"
 $LockScreenDirectory = "C:\Windows\Personalization\LockScreenImage"
 
 #region check for lock screen image and wallpaper image directories and creating them if they are not there.
