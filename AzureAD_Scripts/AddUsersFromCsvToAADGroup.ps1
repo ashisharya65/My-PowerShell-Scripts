@@ -1,4 +1,4 @@
-$Users = Import-Csv "C:\Users\Intune.Test\Downloads\Users.csv"
+$Users = Import-Csv "Path of CSV File."
 $count = $null
 $GroupObjectID = "Group Object ID"
 
