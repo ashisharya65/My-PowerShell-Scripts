@@ -1,7 +1,9 @@
 <#
     .SYNOPSIS
-    Delete the emails from the deleted items of your Inbox in Outlook client app.
+    Delete the emails from the Deleted Items folder of your email account in Outlook app.
    
+   .DESCRIPTION
+   This script will help you to delete the emails from the Deleted Items folder of your email account configured in Outlook app.
    .NOTES
    Author : Ashish Arya (ashisharya65@outlook.com)
    Date   :  5-July-2022
