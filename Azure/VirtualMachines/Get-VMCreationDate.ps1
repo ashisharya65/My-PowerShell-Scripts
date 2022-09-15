@@ -10,8 +10,8 @@
     .\Get-VMCreationDate -Subscriptionid <Subscription id> -ResourceGrouplocation <location of Resource group>
     
     .NOTES
-    Author - Ashish Arya (@ashisharya65)
-    Date   - 15-September-2022
+    Author : Ashish Arya (@ashisharya65)
+    Date   : 15-September-2022
 
 #>
 function Get-VMCreationDate {
