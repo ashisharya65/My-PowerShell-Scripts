@@ -14,6 +14,7 @@
     Date   : 15-September-2022
 
 #>
+
 function Get-VMCreationDate {
     [CmdletBinding()]
     param(
@@ -42,3 +43,13 @@ function Get-VMCreationDate {
 
 }
 
+
+
+<# You will get output similar to the one mentioned below: 
+
+VMName TimeCreated
+------ -----------
+DC1    6/27/2022 10:02:18 AM
+DC2    6/27/2022 9:02:24 AM
+
+#>
