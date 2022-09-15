@@ -1,13 +1,13 @@
 
 <#
     .SYNOPSIS
-    Get creation date of Virtual Machines in a resource group of your Azure subscription.
-
+    Get creation date of Virtual Machines (VMs) from an Azure region within your Azure subscription.
+    
     .DESCRIPTION
-    Using this script you can get the creation date of all the VMS with in a resrouce group of your Azure subscription.
+    This script will help you to get the creation date of all the VMS from an Azure region within your Azure subscription.
 
     .EXAMPLE
-    .\Get-VMCreationDate -Subscriptionid <Subscription id> -ResourceGrouplocation <location of Resource group>
+    .\Get-VMCreationDate -Subscriptionid <Subscription id> -location <Azure>
     
     .NOTES
     Author : Ashish Arya (@ashisharya65)
@@ -21,7 +21,7 @@ function Get-VMCreationDate {
         [Parameter(Mandatory)]
         $Subscriptionid,
         [Parameter(Mandatory)]
-        $ResourceGrouplocation
+        $location
     )
 
     $token = Get-AzAccessToken
