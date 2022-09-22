@@ -8,7 +8,7 @@
         Author : Ashish Arya (@ashisharya65)
         Date   : 22-September-2022
     .EXAMPLE
-       .\DuplicateConfigProfile.ps1 -ConfigProfileName <Existing Config ProfileName> -DuplicateConfigProfileName <Name for Duplicate Config Profile"
+       .\DuplicateConfigProfile.ps1 -ConfigProfileName <Existing Config ProfileName> -DuplicateConfigProfileName <Name for Duplicate Config Profile>"
 #>
 
 param(
@@ -35,12 +35,14 @@ Function Get-AuthToken {
     #>
 
     # Checking if the MSAL.PS Powershell module is installed or not. If not then it will be installed.
-    $MSALModule = Get-Module -Name MSAL.PS -ListAvailable
+    Write-Host "Checking for MSAL.PS module..."
 
-    if ($null -eq $MSALModule) {
+    $MSALPSModule = Get-Module -Name MSAL.PS -ListAvailable
+
+    if ($null -eq $MSALPSModule) {
         Write-Host "MSAL.PS PowerShell module is not installed." -f Red
   
-        $Confirm = Read-Host "Press Y for installing the module or N for cancelling the installion." -f Yellow
+        $Confirm = Read-Host "Press Y for installing the module or N for cancelling the installion"
   
         if ($Confirm -eq "Y") {
             Install-Module -name 'MSAL.PS' -Scope CurrentUser -Force
@@ -52,7 +54,7 @@ Function Get-AuthToken {
         }
   
     }
-
+    
     # Azure AD app details
     $authparams = @{
         ClientId     = 'ClientID'
