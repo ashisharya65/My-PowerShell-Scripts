@@ -4,6 +4,7 @@
         Duplicating Configuration profile in Intune
     .DESCRIPTION
         This script creates a duplicate configuration profile using an existing Intune config profile name.
+        Pre-requisites for this script are MSAL.PS powershell module and Azure AD app details.
     .NOTES
         Author : Ashish Arya (@ashisharya65)
         Date   : 22-September-2022
