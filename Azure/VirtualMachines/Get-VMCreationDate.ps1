@@ -7,7 +7,7 @@
     This script will help you to get the creation date of all the VMS from an Azure region within your Azure subscription.
 
     .EXAMPLE
-    .\Get-VMCreationDate -Subscriptionid <Subscription id> -location <Azure>
+    .\Get-VMCreationDate.ps1 -Subscriptionid <Subscription id> -location <Azure>
     
     .NOTES
     Author : Ashish Arya (@ashisharya65)
