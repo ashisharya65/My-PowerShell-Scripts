@@ -12,7 +12,7 @@
     * Install Azure VPN Client from Microsoft Store (https://apps.microsoft.com/store/detail/azure-vpn-client/9NP355QT2SQB).
 
 .EXAMPLE
-    .\SendGuestUserInvite.ps1 -ExternalEmailAddress <Your external Azure AD account email Address>
+    .\Send-GuestUserInvite.ps1 -ExternalEmailAddress <Your external Azure AD account email Address>
 
 .PARAMETER ExternalEmailAddress
     External user's email address which will be used to set up the Guest user access and also on which the invitation email will be sent. 
