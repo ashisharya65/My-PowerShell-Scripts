@@ -128,5 +128,6 @@ if (($null -eq $AadModule) -and (Test-VPNClientInstallation -eq $false)) {
     Write-Host "Connecting to Azure AD.." -f Yellow
     Start-Sleep 2
     Connect-AzureAD | Out-Null
+    Start-Sleep 2
     Send-GuestUserInvite
 }
