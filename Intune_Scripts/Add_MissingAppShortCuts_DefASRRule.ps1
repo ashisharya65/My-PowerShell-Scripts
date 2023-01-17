@@ -36,12 +36,12 @@ function Add-MissingAppShortCut {
 
 $AllShortCuts =
 @([PSCustomObject]@{
-        Path        = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\outlook.lnk"
+        Path        = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Outlook.lnk"
         TargetPath  = "C:\Program Files\Microsoft Office\root\Office16\outlook.exe"
         WorkingPath = "C:\Program Files\Microsoft Office\root\Office16\"
     },
     [PSCustomObject]@{
-        Path        = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\excel.lnkk"
+        Path        = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\excel.lnk"
         TargetPath  = "C:\Program Files\Microsoft Office\root\Office16\excel.exe"
         WorkingPath = "C:\Program Files\Microsoft Office\root\Office16\"
     },
