@@ -9,6 +9,11 @@
         a) $Env:Azure_CLIENT_ID
         b) $Env:Azure_TENANT_ID
         c) $Env:Azure_CLIENT_SECRET
+        
+     With Microsoft Graph V2 version, we can use -EnvironmentVariable parameter with Connect-MgGraph cmdlet which helps you
+     to connect to Microsoft Graph API using your environment variables. Below is the link for your reference.
+     
+     https://devblogs.microsoft.com/microsoft365dev/microsoft-graph-powershell-v2-is-now-in-public-preview-half-the-size-and-will-speed-up-your-automations/#speed-up-your-automations
  
     .NOTES
       Author: Ashish Arya
