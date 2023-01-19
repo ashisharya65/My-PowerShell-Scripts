@@ -1,4 +1,26 @@
 
+<#
+    .SYNOPSIS    
+     This script is to authenticate to Graph API using Microsoft.Graph PowerShell module.
+
+    .DESCRIPTION
+     This script is to authenticate to Graph API using Microsoft.Graph PowerShell module.
+     Here you need to add below environment variables to your PowerShell session or you can add your PowerShell profile.
+    
+        a) $Env:Azure_CLIENT_ID
+        b) $Env:Azure_TENANT_ID
+        c) $Env:Azure_CLIENT_SECRET
+     
+     With Microsoft Graph V2 version, we can use ClientSecretCredential parameter with Connect-MgGraph cmdlet which helps you
+     to connect to Microsoft Graph API using your Client secret. Below is the link for your reference.
+     
+     https://devblogs.microsoft.com/microsoft365dev/microsoft-graph-powershell-v2-is-now-in-public-preview-half-the-size-and-will-speed-up-your-automations/#speed-up-your-automations
+     
+    .NOTES
+      Author: Ashish Arya
+      Date: 19 Jan 2023
+#>
+
 # Checking and Verifying if the latest Microsoft.Graph Module is installed or not
 $latest = Find-Module -Name Microsoft.Graph -AllVersions -AllowPrerelease | select-Object -First 1
 $current = Get-InstalledModule | Where-Object {$_.Name -eq "Microsoft.Graph"}
