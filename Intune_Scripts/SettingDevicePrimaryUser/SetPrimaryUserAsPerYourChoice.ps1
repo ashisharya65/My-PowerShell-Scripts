@@ -3,7 +3,8 @@
 .SYNOPSIS
     PowerShell Script to Set the Primary User name of an Intune Device
 .DESCRIPTION
-    With this script we will be setting the Primary username of an Intune device as per the User Principal name of our choice,
+    With this script you can set the Primary username on an Intune device as per your choice.
+    This script will prompt you for Intune Device name and the user principal name.
 .NOTES
     Author: Ashish Arya
     Date: 24 Jan 2023
