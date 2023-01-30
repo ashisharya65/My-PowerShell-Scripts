@@ -7,7 +7,7 @@
    This script will help you to set your Azure AD app components like client id, client secret and tenant id on your local machine (where you
    will be running this script) as environment variables.
    
-   This script will prompt you for Client id, client secret and tenant id and after successful execution you will see the below fields as the
+   This script will prompt you for Client id, client secret and tenant id and after successful execution you will see the below fields set as the
    user environment variables with their corresponding values provided.
    
       a) AZURE_CLIENT_ID
