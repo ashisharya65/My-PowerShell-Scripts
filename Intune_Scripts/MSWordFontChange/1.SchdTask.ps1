@@ -12,8 +12,8 @@ $scriptName = ([System.IO.Path]::GetFileNameWithoutExtension($(Split-Path $scrip
 $logFile = $($env:ProgramData) + "\Intune-PowerShell-Logs\$scriptName-" + $(get-date -format "dd_MM_yyyy") + ".log" 
 Start-Transcript -Path $logFile -Append
 
-#enter the path to your script StorageAccounts->"account"->Blobs->"container"->"script"->URL
-$scriptLocation = "<Location of Azure blob where your FontChange script is placed.>" 
+#Enter the path to your script StorageAccounts->"account"->Blobs->"container"->"script"->URL
+$scriptLocation = Read-Host -prompt "Enter the full Azure blob URL of your FontChange PowerShell script " 
 
 
 #########################################################################################################################
