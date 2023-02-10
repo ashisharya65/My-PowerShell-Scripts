@@ -10,14 +10,6 @@
 #>
 
 ####################################################################################
-
-# Parameter for Azure AD group name
-param(
-    [Parameter(Mandatory)]
-    $GroupName
-)
-
-####################################################################################
 Function Get-AuthToken {
     <#
     .SYNOPSIS
@@ -273,12 +265,18 @@ $authToken = Get-AuthToken
 # Getting all the Intune applications details
 $AllApps = Get-IntuneApp | Select-object displayName, id
 
+# Prompt for Group name
+$GroupName = Read-Host -prompt "`nEnter the group name associated to the apps"
+
 # Azure AD Group Object id
 $Groupid = (Get-AADGroup -GroupName $GroupName).id
 
-Write-Host -ForegroundColor Yellow "`n##############################################################################"
-Write-Host -ForegroundColor Yellow "#                      Apps details attached to the Group                    #"
-Write-Host -ForegroundColor Yellow "##############################################################################`n"
+Write-Host -ForegroundColor Yellow "`n---------------------------------"
+Write-Host -ForegroundColor Yellow "|          Applications         |"
+Write-Host -ForegroundColor Yellow "---------------------------------"
+
+# Azure AD Group Object id
+$Groupid = (Get-AADGroup -GroupName $GroupName).id
 
 # Looping through all the apps to get those apps which has the group in the assignment section
 Foreach ($App in $AllApps) {
