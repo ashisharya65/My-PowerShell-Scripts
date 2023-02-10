@@ -1,12 +1,20 @@
 
 <#
+
     .SYNOPSIS
-    PowerShell Script to get all Intune applications deployed to an Azure AD Group.
+    PowerShell Script to get all Intune applications associated to an Azure AD Group.
+    
     .DESCRIPTION
     With this Powershell script, one can easily get all the Intune applications where an Azure AD group is assigned.
+    This script requires to set the environment variables in your client machine with below names:
+        - AZURE_CLIENT_ID
+        - AZURE_CLIENT_SECRET
+        - AZURE_TENANT_ID
+        
     .NOTES
         Author : Ashish Arya
         Date   : 09 Feb 2023
+        
 #>
 
 ####################################################################################
