@@ -1,3 +1,4 @@
+
 <#
     .SYNOPSIS
     Getting the Azure AD groups associated with users.
@@ -12,6 +13,7 @@
     Date   : 13-March-2023
 #>
 
+# RegEx pattern for filtering the Azure AD group with their names
 $RegExPattern = Read-Host -prompt "Enter your RegEx pattern for Azure AD Group name"
 
 # Declare Azure AD app details
@@ -23,14 +25,17 @@ $ClientSecretCredential = New-Object -TypeName 'System.Management.Automation.PSC
 # Connecting to Microsoft Graph
 Connect-MgGraph -TenantId $TenantID -ClientSecretCredential $ClientSecretCredential | Out-Null
 
+# Importing the users details from the CSV file
 $UsersInfo = Import-Csv -path ".\users.csv"
 
+# Storing the Group Info
 $GroupInfo = @()
 
 Write-Host -ForegroundColor Yellow "`n-----------------------------------------"
 Write-Host -ForegroundColor Yellow "| Azure AD Groups associated with users |"
 Write-Host -ForegroundColor Yellow "-----------------------------------------"
 
+# Looping through all users
 Foreach($User in $UsersInfo){
 
     Try{
@@ -57,3 +62,4 @@ Foreach($User in $UsersInfo){
 
 
 $GroupInfo | Select UserName, Groups
+
