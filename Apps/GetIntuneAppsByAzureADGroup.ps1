@@ -322,9 +322,9 @@ Write-Host "`nCollecting all the Applications..." -ForegroundColor 'Yellow'
 $Applist = @()
 Foreach ($App in $AllApps) {
 
-    $AssigedGroupIds = ((Get-IntuneAppAssignment -applicationId $App.Id).assignments.target | Select-Object @{n='GroupId';e={$_.groupId}}).GroupId
+    $AssigedGroupId = ((Get-IntuneAppAssignment -applicationId $App.Id).assignments.target | Select-Object @{n='GroupId';e={$_.groupId}}).GroupId
    
-    If ($AssigedGroupIds -match $Groupid) {
+    If ($AssigedGroupId -eq $Groupid) {
         $Applist += $App.displayName
     }
 } 
