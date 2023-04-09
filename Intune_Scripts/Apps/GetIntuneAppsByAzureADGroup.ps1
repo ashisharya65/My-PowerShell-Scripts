@@ -297,9 +297,6 @@ Function Get-AADGroup() {
 }
 ####################################################################################
 
-# Access token for authenticating to MS Graph
-$authToken = Get-AuthToken
-
 #Checking if the environment variables for the Azure AD app are created or not
 if ($null -eq (Get-ChildItem env: | Where-Object { $_.Name -like "Azure_*" })) {
     
@@ -307,6 +304,9 @@ if ($null -eq (Get-ChildItem env: | Where-Object { $_.Name -like "Azure_*" })) {
 
     Set-EnvtVariables
 }
+
+# Access token for authenticating to MS Graph
+$authToken = Get-AuthToken
 
 # Getting all the Intune applications details
 $AllApps = Get-IntuneApp 
