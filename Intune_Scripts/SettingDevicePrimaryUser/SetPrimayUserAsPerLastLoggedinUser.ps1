@@ -41,23 +41,85 @@ param(
     
 #>
 
-function Get-AuthToken {
+#Function for Setting Environment Variables
+Function Set-EnvtVariables {
+    <#
+    .SYNOPSIS
+    Function set the environment variables in user context.
+    .DESCRIPTION
+    This script will help you to create the user environment variables on the device where you are executing this script.
+    This script will ask you to provide the Clientid, ClientSecret and Tenantid from your Azure AD app created for PowerShell-Graph API integration.
+    .EXAMPLE
+    Set-EnvtVariables
+    .NOTES
+    Name: Set-EnvtVariables
+    #>
+    [cmdletbinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string] $ClientId,
+        [Parameter(Mandatory)]
+        [string] $ClientSecret,
+        [Parameter(Mandatory)]
+        [string] $TenantId
+    )
+
+    $EnvtVariables = @(
+        [PSCustomObject]@{
+            Name  = "AZURE_CLIENT_ID"
+            Value = $CliendId
+        },
+        [PSCustomObject]@{
+            Name  = "AZURE_CLIENT_SECRET"
+            Value = $ClientSecret
+        },
+        [PSCustomObject]@{
+            Name  = "AZURE_TENANT_ID"
+            Value = $TenantId
+        }
+    )
+
+    Foreach ($EnvtVar in $EnvtVariables) {
+        
+        Try {
+            [System.Environment]::SetEnvironmentVariable($EnvtVar.Name, $EnvtVar.Value, [System.EnvironmentVariableTarget]::User)
+        }
+        Catch {
+            Write-Host "Unable to set the $($EnvtVar.Name) environment value. So please set the Environment variables for your Azure AD registered app in order to execute this script successfully." -foreground 'Red'
+        }
+        
+    }
+}
+
+Function Get-AuthToken {
     <#
     .SYNOPSIS
     This function uses the Azure AD app details which in turn will help to get the access token to interact with Microsoft Graph API.
     .DESCRIPTION
     This function uses the Azure AD app details which in turn will help to get the access token to interact with Microsoft Graph API.
+    As a prerequisite for executing this script, you will require the MSAL.PS powershell module for authenticating to the API.
+
     .EXAMPLE
     Get-AuthToken
     .NOTES
     NAME: Get-AuthToken
     #>
 
-    #Below are the details of Azure AD app:
+    # Checking if the MSAL.PS Powershell module is installed or not. If not then it will be installed.
+    Write-Host "Checking for MSAL.PS module..."
+
+    $MSALPSModule = Get-Module -Name MSAL.PS -ListAvailable
+
+    if ($null -eq $MSALPSModule) {
+        Write-Host "MSAL.PS PowerShell module is not installed." -f Red
+        Install-Module -name 'MSAL.PS' -Scope CurrentUser -Force  
+    }
+    
+    # Azure AD app details
     $authparams = @{
-        ClientId     = $Env:AZURE_CLIENT_ID
-        TenantId     = $Env:AZURE_TENANT_ID
-        ClientSecret = ($Env:AZURE_CLIENT_SECRET | ConvertTo-SecureString -AsPlainText -Force)
+        ClientId     = [System.Environment]::GetEnvironmentVariable("Azure_CLIENT_ID")
+        TenantId     = [System.Environment]::GetEnvironmentVariable("AZURE_TENANT_ID")
+        ClientSecret = ([System.Environment]::GetEnvironmentVariable("AZURE_CLIENT_SECRET") | ConvertTo-SecureString -AsPlainText -Force)
     }
     $auth = Get-MsalToken @authParams
 
@@ -68,6 +130,7 @@ function Get-AuthToken {
     return $authorizationHeader
 
 }
+
 #####################################################################################################################################
 
 function Get-Win10IntuneManagedDevice {
@@ -301,6 +364,15 @@ function Set-IntuneDevicePrimaryUser {
 }
 
 #####################################################################################################################################
+
+#Checking if the environment variables for the Azure AD app are created or not
+if ($null -eq (Get-ChildItem env: | Where-Object { $_.Name -like "Azure_*" })) {
+    
+    Write-Host "`nThe environment variables for Azure AD app are not created. Hence creating..." -ForegroundColor "Yellow"
+
+    Set-EnvtVariables
+}
+
 $authToken = Get-AuthToken
 
 $Devices = Get-Win10IntuneManagedDevice
