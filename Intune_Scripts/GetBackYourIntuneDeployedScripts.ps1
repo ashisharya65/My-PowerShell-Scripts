@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Script to export all the Intune deployed PowerShell scripts to the local machine.
@@ -56,14 +57,6 @@ Function Set-EnvtVariables {
         }
         
     }
-}
-
-#Checking if the environment variables for the Azure AD app are created or not
-if ($null -eq (Get-ChildItem env: | Where-Object { $_.Name -like "Azure_*" })) {
-    
-    Write-Host "`nThe environment variables for Azure AD app are not created. Hence creating..." -ForegroundColor "Yellow"
-
-    Set-EnvtVariables
 }
 
 Function Get-AuthToken {
@@ -132,5 +125,14 @@ Function Get-IntunePowerShellScripts {
 }
 
 $FolderPath = Read-Host -Prompt "Enter the full path of the folder where you want to place the Intune PowerShell scripts"
+
+#Checking if the environment variables for the Azure AD app are created or not
+if ($null -eq (Get-ChildItem env: | Where-Object { $_.Name -like "Azure_*" })) {
+    
+    Write-Host "`nThe environment variables for Azure AD app are not created. Hence creating..." -ForegroundColor "Yellow"
+
+    Set-EnvtVariables
+}
+
 $authToken = Get-AuthToken
 Get-IntunePowerShellScripts -FolderPath $FolderPath
