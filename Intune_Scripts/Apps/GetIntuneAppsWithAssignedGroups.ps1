@@ -106,7 +106,7 @@ $ClientSecretCredential = New-Object -TypeName 'System.Management.Automation.PSC
 Connect-MgGraph -TenantId $TenantID -ClientSecretCredential $ClientSecretCredential | Out-Null
 
 # Getting all the Intune applications details
-$AllVNextApps = Get-MgDeviceAppManagementMobileApp -All 
+$AllApps = Get-MgDeviceAppManagementMobileApp -All 
 
 Write-Host "`nCollating all the information.." -ForegroundColor 'Yellow'
 
@@ -114,7 +114,7 @@ Write-Host "`nCollating all the information.." -ForegroundColor 'Yellow'
 $Report = [System.Collections.Generic.List[Object]]::new()
 
 # Looping through all Intune Apps
-Foreach ($App in $AllVNextApps) {
+Foreach ($App in $AllApps) {
       
     # Get the assigned AAD group IDs for the Intune App
     $GroupIdsWithTwoTrailingZeroes = (Get-MgDeviceAppManagementMobileAppAssignment -MobileAppId $App.Id).Id
