@@ -10,8 +10,15 @@
 #region Importing AD module
 Import-Module ActiveDirectory
 
+# Mandatory Variables
+param(
+[parameter(Mandatory)]
+$MailSender,
+[parameter(Mandatory)]
+$SMTPServer
+)
+
 #region Email Variables
-$MailSender = ""
 $Subject    = 'Your account password will expire soon!!!'
 $EmailStub1 = @"
 
@@ -34,9 +41,6 @@ Regards,
 IT Operations
 
 "@ 
-
-#region SMTP Server's Fully qualified domain
-$SMTPServer = ''
 
 #region finding accounts that are Active, their passwords is going to expire in next 7 days, those accounts should be having an email address.
 $users = Get-ADUser -filter {Enabled -eq $True -and PasswordNeverExpires -eq $False -and PasswordLastSet -gt 0} `
