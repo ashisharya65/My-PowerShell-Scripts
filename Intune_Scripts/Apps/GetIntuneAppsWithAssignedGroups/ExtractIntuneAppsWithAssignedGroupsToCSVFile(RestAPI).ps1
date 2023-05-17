@@ -1,12 +1,14 @@
 
 <#
     .SYNOPSIS
-        PowerShell Script to get all group names assigned to an Intune App.
+        PowerShell Script to extract a report of Intune Apps and their assigned Azure AD groups.
+
     .DESCRIPTION
-        WIth this Powershell script, one can easily get all the Azure AD group names assigned to an Intune application.
+        With this Powershell script, one can easily get all the Azure AD group names assigned to an Intune application.
+
     .NOTES
         Author : Ashish Arya
-        Date   : 07 April 2023
+        Date   : 17 May 2023
 #>
 
 # CSV file path
