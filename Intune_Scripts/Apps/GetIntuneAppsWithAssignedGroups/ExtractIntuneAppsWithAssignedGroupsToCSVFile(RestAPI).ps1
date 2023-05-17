@@ -4,7 +4,7 @@
         PowerShell Script to extract a CSV report of Intune Apps and their assigned Azure AD groups.
 
     .DESCRIPTION
-        With this Powershell script, we will get a report of all the Intune apps created in your Tenant and their assigned Azure AD groups. This script uses the Microsoft Graph ( a type of REST) API.
+        With this Powershell script, we will get a report of all the Intune apps created in your Tenant and their assigned Azure AD groups. This script uses the MSAL.PS Powershell Module to get the acces token in order to interact with various Microsoft Graph ( a type of REST) API endpoints.
 
     .NOTES
         Author : Ashish Arya
