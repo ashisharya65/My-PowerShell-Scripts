@@ -4,7 +4,7 @@
         PowerShell Script to extract a report of Intune Apps and their assigned Azure AD groups.
 
     .DESCRIPTION
-        With this Powershell script, one can easily get all the Azure AD group names assigned to an Intune application.
+        With this Powershell script, we will get a report of all the Intune apps created in your Tenant and their assigned Azure AD groups.
 
     .NOTES
         Author : Ashish Arya
