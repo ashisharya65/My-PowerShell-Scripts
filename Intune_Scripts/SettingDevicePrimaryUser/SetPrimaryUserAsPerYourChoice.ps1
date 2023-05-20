@@ -1,17 +1,73 @@
 
 <#
-.SYNOPSIS
-    PowerShell Script to Set the Primary User name of an Intune Device
-.DESCRIPTION
-    With this script you can set the Primary username on an Intune device as per your choice.
-    This script will prompt you for Intune Device name and the user principal name.
-.NOTES
-    Author: Ashish Arya
-    Date: 24 Jan 2023
+    .SYNOPSIS
+        PowerShell Script to Set the Primary User name of an Intune Device
+        
+    .DESCRIPTION
+        With this script we will be setting the Primary username of an Intune device as per the User Principal name of our choice.
+        This script uses the Microsoft Graph (REST) API.
+        
+        This script checks for the environment variable for your Azure AD registered app are already set up on your local machine or not. If they are not there 
+        then it will prompt you to provide them so that it will create them on your machine as thesee variables are mandatory for successful execution
+        of this script.
+
+        This script also checks and if not found,installs the MSAL.PS powershell module which is used to get the access token to interact with MS Graph API.
+        
+    .NOTES
+        Author: Ashish Arya
+        Date: 24 Jan 2023
 #>
 
+Function Set-EnvtVariables {
+    <#
+    .SYNOPSIS
+    Function set the environment variables in user context.
+    .DESCRIPTION
+    This script will help you to create the user environment variables on the device where you are executing this script.
+    This script will ask you to provide the Clientid, ClientSecret and Tenantid from your Azure AD app created for PowerShell-Graph API integration.
+    .EXAMPLE
+    Set-EnvtVariables
+    .NOTES
+    Name: Set-EnvtVariables
+    #>
+    [cmdletbinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string] $ClientId,
+        [Parameter(Mandatory)]
+        [string] $ClientSecret,
+        [Parameter(Mandatory)]
+        [string] $TenantId
+    )
 
-function Get-AuthToken {
+    $EnvtVariables = @(
+        [PSCustomObject]@{
+            Name  = "AZURE_CLIENT_ID"
+            Value = $CliendId
+        },
+        [PSCustomObject]@{
+            Name  = "AZURE_CLIENT_SECRET"
+            Value = $ClientSecret
+        },
+        [PSCustomObject]@{
+            Name  = "AZURE_TENANT_ID"
+            Value = $TenantId
+        }
+    )
+
+    Foreach ($EnvtVar in $EnvtVariables) {
+        
+        Try {
+            [System.Environment]::SetEnvironmentVariable($EnvtVar.Name, $EnvtVar.Value, [System.EnvironmentVariableTarget]::User)
+        }
+        Catch {
+            Write-Host "Unable to set the $($EnvtVar.Name) environment value." -foreground 'Red'
+        }
+        
+    }
+}
+
+Function Get-AuthToken {
     <#
     .SYNOPSIS
     This function uses the Azure AD app details which in turn will help to get the access token to interact with Microsoft Graph API.
@@ -25,9 +81,9 @@ function Get-AuthToken {
 
     #Below are the details of Azure AD app:
     $authparams = @{
-        ClientId     = $Env:Azure_CLIENT_ID
-        TenantId     = $Env:Azure_TENANT_ID
-        ClientSecret = ($Env:Azure_CLIENT_SECRET | ConvertTo-SecureString -AsPlainText -Force)
+        ClientId     = [System.Environment]::GetEnvironmentVariable("AZURE_CLIENT_ID")
+        TenantId     = [System.Environment]::GetEnvironmentVariable("AZURE_TENANT_ID")
+        ClientSecret = ([System.Environment]::GetEnvironmentVariable("AZURE_CLIENT_SECRET") | ConvertTo-SecureString -AsPlainText -Force)
     }
     $auth = Get-MsalToken @authParams
 
@@ -40,7 +96,7 @@ function Get-AuthToken {
 }
 
 ###################################################################
-function Get-Win10IntuneManagedDevice {
+Function Get-Win10IntuneManagedDevice {
 
     <#
     .SYNOPSIS
@@ -66,7 +122,7 @@ function Get-Win10IntuneManagedDevice {
     
     try {
    
-        $Resource = "deviceManagement/managedDevices?`$filter=deviceName eq '$deviceName'"
+        $Resource = "deviceManagement/managedDevices?`$filter=deviceName eq '$($deviceName)'"
         $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)" 
     
         (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).value        
@@ -146,7 +202,7 @@ Function Get-AADUser() {
 }
 
 ###################################################################
-function Get-IntuneDevicePrimaryUser {
+Function Get-IntuneDevicePrimaryUser {
 
     <#
     .SYNOPSIS
@@ -191,7 +247,7 @@ function Get-IntuneDevicePrimaryUser {
 }
 
 ###################################################################
-function Set-IntuneDevicePrimaryUser {
+Function Set-IntuneDevicePrimaryUser {
 
     <#
     .SYNOPSIS
@@ -245,33 +301,53 @@ function Set-IntuneDevicePrimaryUser {
 }
 ###################################################################
 
+# Checking if the environment variables for the Azure AD app are created or not
+if ($null -eq (Get-ChildItem env: | Where-Object { $_.Name -like "Azure*" })) {
+    Write-Host "The environment variables are not created." -ForegroundColor "Yellow"
+    Write-Host "Hence creating..." -ForegroundColor "Yellow"
+
+    try {
+        Set-EnvtVariables
+    }
+    catch {
+        Write-Host "Unable to create the environment variables." -ForegroundColor "Red"
+        break;
+    }
+}
+else {
+    Write-Host
+    Write-Host "The Environment variables are already created." -ForegroundColor "Green"
+}
+
+###################################################################
+
+# Getting the Access token to connect to Graph API.
 $authToken = Get-AuthToken
 
 ###################################################################
 
+# Prompt for Devicename
+Write-Host
 $DeviceName = Read-Host -prompt "Enter the Device name"
 $Device = Get-Win10IntuneManagedDevice -deviceName $DeviceName
 
 ###################################################################
 
-$UserUPN = Read-Host -prompt "Enter the user UPN whom you want to set as Primary user on the $Devicename"
-$User = Get-AADUser -userPrincipalName $UserUPN
-
+# Prompt for User principal name
+Write-Host
+$UserUPN           = Read-Host -prompt "Enter the user UPN whom you want to set as Primary user on the $Devicename"
+$FinalPrimaryUser  = Get-AADUser -userPrincipalName $UserUPN
 ###################################################################
 
-Try {
-    #Checking if last logger in user is same as the current primary user
-    $LastLoggedInUser = ($Device.usersLoggedOn[-1]).userId
-    $CurrentPrimaryUser = Get-IntuneDevicePrimaryUser -deviceId $Device.id 
-    If ($CurrentPrimaryUser -eq $LastLoggedInUser) {
-        Write-Host "The user $($User.displayName) is already set as Primary username on $DeviceName" -ForegroundColor "Green"
-    }
-    Else {
-        Set-IntuneDevicePrimaryUser -IntuneDeviceId $Device.id -userId $User.id
-        Write-Host "The user $($User.displayName) is already set as Primary username on $DeviceName"
-    }
+#Checking and if not found, setting the provided user as the current primary user
+$FinalPrimaryUserId = $FinalPrimaryUser.id
+$CurrentPrimaryUserId = Get-IntuneDevicePrimaryUser -deviceId $Device.id
+If ($CurrentPrimaryUserId -eq $FinalPrimaryUserId) {
+        Write-Host "`nThe user provided $($FinalPrimaryUser.displayName) is already set as Primary username on $DeviceName device.`n" -ForegroundColor "Cyan" 
 }
-Catch {
-    Write-Host "Unable to update the primary username." -ForegroundColor 'Red'
+Else {
+        Set-IntuneDevicePrimaryUser -IntuneDeviceId $Device.id -userId $FinalPrimaryUserId 
+        Write-Host "`nThe user $($FinalPrimaryUser.displayName) has been set as Primary username on $DeviceName device.`n" -ForegroundColor 'Green'
 }
-###################################################################
+
+############################################################################# END ##############################################################################
