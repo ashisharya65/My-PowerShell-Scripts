@@ -347,7 +347,7 @@ If ($CurrentPrimaryUserId -eq $FinalPrimaryUserId) {
     Write-Host "`nThe user $($FinalPrimaryUser.displayName) is already set as Primary username on $DeviceName device.`n" -ForegroundColor "Cyan" 
 }
 Else {
-    Set-IntuneDevicePrimaryUser -IntuneDeviceId $Device.id -userId $FinalPrimaryUserId 
+    Set-IntuneDevicePrimaryUser -IntuneDeviceId $Device.id -userId $FinalPrimaryUserId -ErrorAction 'Stop'
     Write-Host "`nThe user $($FinalPrimaryUser.displayName) has been set as Primary username on $DeviceName device.`n" -ForegroundColor 'Green'
 }
 
