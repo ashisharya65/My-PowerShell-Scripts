@@ -172,7 +172,7 @@ Write-Host "`n================================"
 Write-Host "Below are the app credentials: " -ForegroundColor Green
 Write-Host "================================" 
 Write-Host "Client ID: " -ForegroundColor 'Cyan' -NoNewline
-Write-Host $AppRegistration.AppId --ForegroundColor 'Yellow'
+Write-Host $AppRegistration.AppId -ForegroundColor 'Yellow'
 Write-Host "Object ID: " -ForegroundColor 'Cyan' -NoNewline
 Write-Host $AppRegistration.Id -ForegroundColor 'Yellow'
 Write-Host "Tenand ID: " -ForegroundColor 'Cyan' -NoNewline
