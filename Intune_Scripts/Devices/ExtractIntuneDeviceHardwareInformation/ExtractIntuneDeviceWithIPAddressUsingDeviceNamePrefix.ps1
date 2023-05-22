@@ -236,6 +236,7 @@ Else {
 
 }
 
+#Device name prefix for getting the specific devices
 $DeviceNamePrefix = Read-Host -Prompt "Enter the Device name prefix"
 
 Write-Host "`nCollating all Intune devices & their local IP addresses.." -ForegroundColor 'Cyan'
