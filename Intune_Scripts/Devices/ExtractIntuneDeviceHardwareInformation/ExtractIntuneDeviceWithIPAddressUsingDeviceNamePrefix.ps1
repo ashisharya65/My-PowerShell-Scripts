@@ -1,10 +1,10 @@
 
 <#
     .SYNOPSIS
-        PowerShell script to get Intune devices hardware details like devicenames & local IP addresses.
+        PowerShell script to get Intune devices hardware details like devicenames & local IP addresses using a Device name prefix.
     
     .DESCRIPTION
-        This script will extract a CSV report storing the Intune devices' names and their local IP addresses to a CSV file.
+        This script will extract a CSV report of all those Intune devices (starting with device name prefix) with their local IP addresses.
 
         This script checks for the environment variable for your Azure AD registered app are already set up on your local machine or not. If they are not there 
         then it will prompt you to provide them so that it will create them on your machine as thesee variables are mandatory for successful execution
