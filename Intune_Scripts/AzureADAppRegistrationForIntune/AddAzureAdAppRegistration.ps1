@@ -168,17 +168,6 @@ If (([string]::IsNullOrEmpty($ExistingResourceAccess) ) -or ($ExistingResourceAc
     Update-MgApplication -ApplicationId $AppRegistration.id -RequiredResourceAccess $ExistingResourceAccess
 }
 
-# #Granting permissions to all API permissions
-# $ClientSP = Get-MgServicePrincipal -Filter "DisplayName eq '$appname'"
-# $ResourceSP = Get-MgServicePrincipal -Filter "appId eq '$($AppRegistration.appid)'"
-# $params = @{
-#     ClientId    = $ClientSP.Id
-#     ConsentType = "AllPrincipals"
-#     ResourceId  = $ResourceSP.Id
-#     Scope       = "DeviceManagementApps.ReadWrite.All"
-# }
-# New-MgOauth2PermissionGrant -BodyParameter $params
-
 Write-Host "`n================================" 
 Write-Host "Below are the app credentials: " -ForegroundColor Green
 Write-Host "================================" 
