@@ -115,7 +115,7 @@ Function Get-AuthToken {
 
 }
 #####################################################################################################################################
-Function Get-IntuneManagedDevice {
+Function Get-W10IntuneManagedDevice {
 
     <#
         .SYNOPSIS
@@ -123,9 +123,9 @@ Function Get-IntuneManagedDevice {
         .DESCRIPTION
         This gets information on Intune managed devices
         .EXAMPLE
-        Get-Win10IntuneManagedDevice
+        Get-W10IntuneManagedDevice
         .NOTES
-        NAME: Get-Win10IntuneManagedDevice
+        NAME: Get-W10IntuneManagedDevice
     #>
     
     [cmdletbinding()]
@@ -314,12 +314,12 @@ Else {
 }
 
 Write-Host "`nCollating all Intune devices local IP addresses & their Primary users.." -ForegroundColor 'Cyan'
-$Report = Get-IntuneManagedDevice | Foreach-Object { 
+$Report = Get-W10IntuneManagedDevice | Foreach-Object { 
     [PSCustomObject][Ordered]@{
         Name        = $_.deviceName
         PrimaryUser = Get-AADUser -id (Get-IntuneDevicePrimaryUser -deviceId $_.id)
     }
-}
+} | Format-Table -Autosize
 
 Write-Host ("`nExporting the Intune Device IP address & Primary username details to a CSV report...") -ForegroundColor 'Green'
 $Report | Export-CSV -NoTypeInformation $CSVFilePath
