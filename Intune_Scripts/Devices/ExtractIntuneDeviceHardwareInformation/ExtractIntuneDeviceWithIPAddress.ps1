@@ -13,7 +13,8 @@
         This script also checks and if not found,installs the MSAL.PS powershell module which is used to get the access token to interact with MS Graph API.
     
     .NOTES
-        Information or caveats about the function e.g. 'This function is not supported in Linux'
+        Author : Ashish Arya
+        Date   : 22 May 2023
 #>
 
 #####################################################################################################################################
