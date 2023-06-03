@@ -113,7 +113,7 @@ $AllApps = Get-MgDeviceAppManagementMobileApp -all | Select-Object Id,DisplayNam
 Write-Host "`nCollating all the information..`n" -ForegroundColor 'Yellow'
 
 # Looping through all Intune Apps
-Foreach($App in $AllVNextApps){
+Foreach($App in $AllApps){
 
     # Inializing the variables 
     $GroupIdsEndingWithTwoZeroes = $GroupNames = $null
