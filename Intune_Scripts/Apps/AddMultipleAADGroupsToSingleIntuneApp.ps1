@@ -85,7 +85,7 @@ Function Get-AuthToken {
     }
     
     # Azure AD app details
-   $authparams = @{
+    $authparams = @{
         ClientId     = [System.Environment]::GetEnvironmentVariable("AZURE_CLIENT_ID")
         TenantId     = [System.Environment]::GetEnvironmentVariable("AZURE_TENANT_ID")
         ClientSecret = ([System.Environment]::GetEnvironmentVariable("AZURE_CLIENT_SECRET") | ConvertTo-SecureString -AsPlainText -Force)
@@ -480,7 +480,7 @@ Function Get-AADGroup() {
 }
 
 #Checking if the environment variables for the Azure AD app are created or not
-if ($null -eq (Get-ChildItem env: | Where-Object{($_.Name -like "Azure_*")}){
+if ($null -eq (Get-ChildItem env: | Where-Object { ($_.Name -like "Azure_*") })) {
     
     Write-Host "`nThe environment variables for Azure AD app are not created. Hence creating..." -ForegroundColor "Yellow"
 
@@ -511,4 +511,3 @@ Foreach ($AADGroup in $AADGroups) {
     Write-Host "The AAD Group - $($AADGroup) is added to the $(($Application).displayName) application." -ForegroundColor Green
 
 }
-
