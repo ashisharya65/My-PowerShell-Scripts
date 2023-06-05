@@ -4,7 +4,7 @@
     PowerShell script to turn on the Smart App control in Windows devices.
 
     .DESCRIPTION
-    This script will force enable the Smart app control setting in Windows device.
+    This script will forcefully turned on the Smart app control setting in Windows devices.
 
     .NOTES
     Author : Ashish Arya
