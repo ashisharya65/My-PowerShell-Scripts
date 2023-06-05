@@ -14,8 +14,8 @@
 $Reglocation = "HKLM:\SYSTEM\CurrentControlSet\Control\CI\Policy"
 
 If ((Get-ItemProperty $Reglocation).VerifiedAndReputablePolicyState -ne 1){
-    Write-Host "Turning on the Smart app control" -f 'Green'
-    Set-ItemProperty $Reglocation -Name VerifiedAndReputablePolicyState -Value 1
+    Set-ItemProperty $Reglocation -Name VerifiedAndReputablePolicyState -Value 1 -force
+Write-Host "Smart App control has been turned on." -f 'Green'
 }Else{
-    Write-Host "The Smart app control setting is already turned on" -f 'Cyan'
+    Write-Host "The Smart app control is already in turned on state." -f 'Cyan'
 }
