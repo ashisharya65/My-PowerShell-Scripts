@@ -12,7 +12,7 @@
 #>
 
 Param(
-    $FolderPath = "D:\AshishArya_Docs\Github\ashisharya65\Learn-CSharp\NoteBooks"
+    $FolderPath
 )
 
 # Getting all the files from a folder and sorting them as per their creation time
