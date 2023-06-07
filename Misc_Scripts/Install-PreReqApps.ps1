@@ -12,6 +12,9 @@
 
 #>
 
+# Setting the execution policy to bypass
+Set-ExecutionPolicy Bypass -Scope CurrentUser -Force
+
 # Getting the current user information
 $CurrentWindowsIdentity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 
