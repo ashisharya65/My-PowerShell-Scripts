@@ -27,27 +27,31 @@ If ($CurrentWindowsPrincipal.IsInRole([System.Security.Principal.WindowsBuiltInR
             Id   = "Microsoft .NET SDK"
         },
         [PSCustomObject]@{
+            Name = "Google Chrome"
+            Id   = "Google.Chrome"
+        },
+        [PSCustomObject]@{
             Name = "PowerShell"
             Id   = "Microsoft.PowerShell"
         },
         [PSCustomObject]@{
-            Name = "OhMyPosh"
+            Name = "Oh-My-Posh"
             Id   = "JanDeDobbeleer.OhMyPosh"
         },
         [PSCustomObject]@{
-            Name = "VisualStudioCode"
+            Name = "Visual Studio Code"
             Id   = "Microsoft.VisualStudioCode"
         },
         [PSCustomObject]@{
-            Name = "Bicep"
+            Name = "Azure Bicep"
             Id   = "Microsoft.Bicep"
         },
         [PSCustomObject]@{
-            Name = "AzureCLI"
+            Name = "Azure CLI"
             Id   = "Microsoft.AzureCLI"
         },
         [PSCustomObject]@{
-            Name = "GitHubDesktop"
+            Name = "GitHub Desktop"
             Id   = "GitHub.GitHubDesktop"
         },
         [PSCustomObject]@{
@@ -59,11 +63,11 @@ If ($CurrentWindowsPrincipal.IsInRole([System.Security.Principal.WindowsBuiltInR
             Id   = "GoLang.go"
         },
         [PSCustomObject]@{
-            Name = "WindowsTerminal"
+            Name = "Windows Terminal"
             Id   = "Microsoft.WindowsTerminal"
         },
         [PSCustomObject]@{
-            Name = "FunctionsCoreTools"
+            Name = "Functions Core Tools"
             Id   = "Microsoft.Azure.FunctionsCoreTools"
         }
     ) | Foreach-Object {
