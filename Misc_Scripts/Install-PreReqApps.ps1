@@ -1,10 +1,10 @@
 <#
     .SYNOPSIS
-    PowerShell script to customize your machine.
+    PowerShell script to install those apps & PowerShell modules which you need on a fresh machine.
 
     .DESCRIPTION
-    PowerShell Script to install apps and my favourite PowerShell modules to customize your machine.
-    This script requires a machine which already has WSL installed.
+    PowerShell Script to install my favorite apps and my favourite PowerShell modules which I need on a fresh device using Windows inbuilt package manager winget.
+    This script assumes that WSL is already installed.
 
     .NOTES
     Author : Ashish Arya
