@@ -3,9 +3,9 @@
     PowerShell Script to create an event triggered scheduled task to shutdown device after user log off event is triggered.
 
   .DESCRIPTION
-    With this PowerShell script, an event triggered scheduled task will be created on task scheduler of windows device which will shutdown the VM 
-    whenever the user logoff event (Event id 4647) is triggered.
-
+    With this PowerShell script, an event triggered scheduled task will be created on windows device and will be triggered to shutdown the device
+    whenever the user logoff event (Event id 4647) is generated in the event viewer.
+    
   .NOTES
     Author : Ashish Arya
     Date   : 14-June-2023
