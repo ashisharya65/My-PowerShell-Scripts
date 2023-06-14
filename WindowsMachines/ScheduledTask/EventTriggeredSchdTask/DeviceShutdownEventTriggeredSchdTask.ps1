@@ -30,6 +30,7 @@ $TaskTrigger.Subscription =
   </Query>
 </QueryList>
 "@
+$TaskTrigger.Delay = "PT30M"      # 30 mins of delay on triggering of schedule task.
 $TaskTrigger.Enabled = $True
 $TaskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -Compatibility 'Win8'
 $TaskPrincipal = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -LogonType 'ServiceAccount' -RunLevel 'Highest'
