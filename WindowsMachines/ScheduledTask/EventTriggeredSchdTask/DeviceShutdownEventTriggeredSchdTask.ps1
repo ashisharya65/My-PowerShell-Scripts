@@ -1,9 +1,9 @@
 <#
   .SYNOPSIS
-    PowerShell Script to create an event triggered scheduled task to shutdown AVD session hosts after user log off event is triggered.
+    PowerShell Script to create an event triggered scheduled task to shutdown device after user log off event is triggered.
 
   .DESCRIPTION
-    With this PowerShell script, an event triggered scheduled task will be created on task scheduler of every AVD session host which will shutdown the VM 
+    With this PowerShell script, an event triggered scheduled task will be created on task scheduler of windows device which will shutdown the VM 
     whenever the user logoff event (Event id 4647) is triggered.
 
   .NOTES
@@ -15,8 +15,8 @@
 #>
 
 # Mentioning Scheduled task details like name, description, trigger & action.
-$TaskName = "AVD shutdown on User Logoff event"
-$Taskdescription = "Task to shutdown the AVD whenever the user logoff event happens."
+$TaskName = "Device Shutdown on User Logoff event"
+$Taskdescription = "Task to shutdown the device whenever the user logoff event happens."
 $TaskAction = New-ScheduledTaskAction -Execute "C:\Windows\System32\shutdown.exe"  -Argument "/f /s /t 0"
 $CIMTriggerClass = Get-CimClass -ClassName 'MSFT_TaskEventTrigger' -Namespace 'Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger'
 $TaskTrigger = New-CimInstance -CimClass $CIMTriggerClass -ClientOnly
