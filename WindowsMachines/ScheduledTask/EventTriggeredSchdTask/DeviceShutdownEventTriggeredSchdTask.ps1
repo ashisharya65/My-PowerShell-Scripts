@@ -35,3 +35,5 @@ $TaskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopI
 $TaskPrincipal = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -LogonType 'ServiceAccount' -RunLevel 'Highest'
 $Task = New-ScheduledTask -Description $Taskdescription -Action $TaskAction -Settings $TaskSettings -Trigger $TaskTrigger -Principal $TaskPrincipal
 Register-ScheduledTask -InputObject $Task -TaskName $TaskName
+
+
