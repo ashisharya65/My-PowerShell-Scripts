@@ -1,11 +1,11 @@
 
 <#
   .SYNOPSIS
-    PowerShell Script to create an event triggered scheduled task to shutdown AVD session hosts after user log off event is triggered.
+    PowerShell Script to create an event triggered scheduled task to shutdown windows device after user log off event is triggered.
 
   .DESCRIPTION
-    With this PowerShell script, an event triggered scheduled task will be created on task scheduler of every AVD session host which will shutdown the VM 
-    whenever the user logoff event (Event id 4647) is triggered.
+    With this PowerShell script, an event triggered scheduled task will be created on task scheduler which will shutdown the device whenever
+    the user logoff event (Event id 4647) is triggered.
 
   .NOTES
     Author : Ashish Arya
