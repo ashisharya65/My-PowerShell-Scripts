@@ -14,11 +14,13 @@
     .\Reset-AVDShutdownEventTriggeredSchdTask.ps1
 #>
 
+# Prompt to get the path of reset script. You will find the reset script
 Param(
-    [parameter(mandatory)]
-    $$PathOfResetScript
+    [Parameter(Mandatory)]
+    $PathOfResetScript
 )
 
+# Schedule task and mentioning all its properties.
 $TaskName = "Reset AVD Shutdown Event Triggered Schd task"
 $Taskdescription = "Disable & Enable AVD shutdown event triggered schd task when User Connect event is triggered."
 $TaskAction = New-ScheduledTaskAction -Execute $PathOfResetScript
