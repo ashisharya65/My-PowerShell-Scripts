@@ -15,11 +15,25 @@
 
 #>
 
-function Get-VMCreationDate {
+# Install the Az module if it is not installed
+$AzModule = Get-InstalledModule | Where-Object { $_.Name -like "Az*" }
+If ($null -eq $AzModule) {
+    Write-Host "Az module is not installed on the machine. Hence installing it.." -ForegroundColor 'Yellow'
+    Try {
+        Install-Module Az -Scope CurrentUser -Force -ErrorAction 'Stop'
+        Write-Host "Az module was installed successfully" -ForegroundColor 'Green'
+    }
+    Catch {
+        Write-Error $_.Exception.Message
+        Break;
+    }
+}
+
+Function Get-VMCreationDate {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        $Subscriptionid,
+        $subid,
         [Parameter(Mandatory)]
         $location
     )
@@ -31,7 +45,7 @@ function Get-VMCreationDate {
         'Authorization' = 'Bearer ' + $token.Token
     }
     
-    $result = Invoke-RestMethod -Uri https://management.azure.com/subscriptions/$subid/providers/Microsoft.Compute/locations/$location/virtualMachines?api-version=2022-03-01 `
+    $result = Invoke-RestMethod -Uri "https://management.azure.com/subscriptions/$subid/providers/Microsoft.Compute/locations/$location/virtualMachines?api-version=2022-03-01" `
         -Method GET -Headers $authHeader
 
     $result.value | ForEach-Object {
@@ -42,7 +56,6 @@ function Get-VMCreationDate {
     } | Select-Object VMName, TimeCreated
 
 }
-
 
 
 <# You will get output similar to the one mentioned below: 
