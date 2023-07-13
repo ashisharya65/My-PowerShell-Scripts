@@ -33,7 +33,7 @@ Function Get-VMCreationDate {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        $subid,
+        $Subscriptionid,
         [Parameter(Mandatory)]
         $location
     )
@@ -45,7 +45,7 @@ Function Get-VMCreationDate {
         'Authorization' = 'Bearer ' + $token.Token
     }
     
-    $result = Invoke-RestMethod -Uri "https://management.azure.com/subscriptions/$subid/providers/Microsoft.Compute/locations/$location/virtualMachines?api-version=2022-03-01" `
+    $result = Invoke-RestMethod -Uri "https://management.azure.com/subscriptions/$Subscriptionid/providers/Microsoft.Compute/locations/$location/virtualMachines?api-version=2022-03-01" `
         -Method GET -Headers $authHeader
 
     $result.value | ForEach-Object {
