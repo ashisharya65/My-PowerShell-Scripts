@@ -20,7 +20,7 @@ param (
     $erroractionpreference = "Stop"
 )
 
-# Install if the Az module is not installed
+# Install the Az module if it is not installed
 $AzModule = Get-InstalledModule | Where-Object { $_.Name -like "Az*" }
 If ($null -eq $AzModule) {
     Write-Host "Az module is not installed on the machine. Hence installing it.." -ForegroundColor 'Yellow'
