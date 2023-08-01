@@ -44,8 +44,8 @@ Else {
 Connect-MgGraph -Scope "DeviceManagementServiceConfig.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,Device.ReadWrite.All,Directory.ReadWrite.All"
 
 # Importing the csv file of devices having SerialNumber header
-$TextFilePath = "$($PSScriptRoot)\" + "$($myInvocation.myCommand.name.split('.')[0])" + ".csv"
-$Devices = Import-Csv -path $TextFilePath
+$CSVFilePath = "$($PSScriptRoot)\" + "$($myInvocation.myCommand.name.split('.')[0])" + ".csv"
+$Devices = Import-Csv -path $CSVFilePath
 
 Foreach($Device in $Devices){
 
