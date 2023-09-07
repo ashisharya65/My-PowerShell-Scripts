@@ -22,7 +22,7 @@ Param(
     [Parameter(Mandatory)] $HostPoolName,
     [Parameter(Mandatory)] $AzureADRegisteredAppId,     # The app id of your Azure Ad registered app
     [Parameter(Mandatory)] $AADRegisteredAppSecret,     # The secret of your Azure Ad registered app
-    [Parameter(Mandatory)] $TextFilePath
+    [Parameter(Mandatory)] $TextFilePath                # Path of the text file which stores the device names
 )
 
 # Importing the text file of devices having devicename header
