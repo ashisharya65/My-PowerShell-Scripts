@@ -104,7 +104,7 @@ Foreach ($Device in $Devices) {
     If ($AVDPowerState -eq "VM running") {
         Write-Host "The $($Device) AVD is still running. Hence shutting it down now." -ForegroundColor "Yellow"
         Try {
-            Stop-AzVM -ResourceGroupName $AVDResourceGroup -Name $Device -ErrorAction 'Stop'
+            Stop-AzVM -ResourceGroupName $AVDResourceGroup -Name $Device -ErrorAction 'Stop' -Force -NoWait
             Write-Host "$($Device) has been sucessfully stopped." -ForegroundColor 'Green'
         }
         Catch {
