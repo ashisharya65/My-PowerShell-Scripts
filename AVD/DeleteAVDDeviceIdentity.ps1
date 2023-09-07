@@ -25,6 +25,9 @@ Param(
     [Parameter(Mandatory)] $TextFilePath
 )
 
+# Importing the text file of devices having devicename header
+$Devices = Get-Content -path $TextFilePath 
+
 # Checking and Verifying if the latest version of Az, Microsoft.Graph & Az.DestopVirtualization powerShell modules are installed or not
 $Modules = @(
     "Az",
@@ -66,19 +69,20 @@ $AADRegisteredAppSecret = $AADRegisteredAppSecret | ConvertTo-SecureString -AsPl
 $ClientSecretCredential = New-Object -TypeName 'System.Management.Automation.PSCredential' -ArgumentList $AzureADRegisteredAppId, $AADRegisteredAppSecret
 Connect-MgGraph -TenantId $TenantID -ClientSecretCredential $ClientSecretCredential | Out-Null
 
+# Function to remove the AVD from the Azure VM portal
 Function Remove-AVDFromAzureVMPortal {
     [cmdletbinding()]
     Param(
         $DeviceIdentity
     )
-
+    
     $DeviceIdentity.StorageProfile.OsDisk.DeleteOption = 'Delete'
     $DeviceIdentity.StorageProfile.DataDisks | ForEach-Object { $_.DeleteOption = 'Delete' }
     $DeviceIdentity.NetworkProfile.NetworkInterfaces | ForEach-Object { $_.DeleteOption = 'Delete' }
     $DeviceIdentity | Update-AzVM | Out-Null
 
     Try {
-        Remove-AzVm -ResourceGroupName $AVDResourceGroup -Name $DeviceIdentity.Name -ForceDeletion $true -Force | Out-Null
+        Remove-AzVm -ResourceGroupName $AVDResourceGroup -Name $DeviceIdentity.Name -ForceDeletion $true -Force -NoWait | Out-Null
         Write-Host "The device identity of $($DeviceIdentity.Name) AVD has been successfully deleted from Azure VM portal." -ForegroundColor 'Green'
     }
     Catch {
@@ -86,9 +90,6 @@ Function Remove-AVDFromAzureVMPortal {
         Write-Error $errormessage
     }
 }
-
-# Importing the text file of devices having devicename header
-$Devices = Get-Content -path $TextFilePath 
 
 # Looping through all devices to delete their identities
 $Count = $null
