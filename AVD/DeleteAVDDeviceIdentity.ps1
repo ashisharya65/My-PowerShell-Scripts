@@ -40,7 +40,7 @@ Foreach ($Module in $Modules) {
     $current = Get-InstalledModule | Where-Object { $_.Name -eq $Module }
     If ($latest.version -gt $current.version) {
         Try {
-            Write-Host "Latest version $($latest.version) of $($Module) 7is not installed. Hence installing it..." -ForegroundColor 'Yellow'
+            Write-Host "Latest version $($latest.version) of $($Module) PowerShell module is not installed. Hence installing it..." -ForegroundColor 'Yellow'
             Update-Module -Name $Module -RequiredVersion $latest.version -AllowPrerelease -Force -ErrorAction 'Stop'
             Write-Host "$($Module) PowerShell module has been successfully updated to $($latest.Version) version."-ForegroundColor 'Green'
         }
