@@ -16,13 +16,13 @@ Function Enable-AzVMAutoShutdownWithNotification {
             HelpMessage = "Location of Azure VM.")] 
         $location,
         [Parameter(Mandatory,
-            HelpMessage = "Set the autoshutdown time in a similar way like this 2215 for 10:15 PM.")] 
+            HelpMessage = "Set the auto-shutdown time in a similar way like this 2215 for 10:15 PM.")] 
         $time,
         [Parameter(Mandatory,
             HelpMessage = "The concerned timezone which you need to set. For eg. Indian Standard Time.")] 
         $timezone,
         [Parameter(Mandatory,
-            HelpMessage = "Email address of receipient of Email notification.")]
+            HelpMessage = "Receipient's Email address for sending Email notification of autoshutdown.")]
         $emailrecipient
     )
 
