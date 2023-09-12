@@ -20,7 +20,7 @@ Function Enable-AzVMAutoShutdown {
             HelpMessage = "Set the autoshutdown time in a similar way like this 2215 for 10:15 PM.")] 
         $time,
         [Parameter(Mandatory,
-            HelpMessage = "The concerned timezone which you need to set. For eg. Indian Standard Time.")] 
+            HelpMessage = "The concerned timezone which you need to set. For eg. India Standard Time.")] 
         $timezone 
     )
 
@@ -37,7 +37,7 @@ Function Enable-AzVMAutoShutdown {
     $requestbody = @"
 {
     "location" : "$($location)",
-    properties : {
+    "properties" : {
         "dailyRecurrence" : {
             "time" : "$($time)"
         },
@@ -60,7 +60,7 @@ Function Enable-AzVMAutoShutdown {
     }
     Catch {
         $errormessage = $_.Exception.Message
-        Write-Error $errormessage
+        Write-Host "$($errormessage)" -ForegroundColor 'Red'
     }
 }
 
