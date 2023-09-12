@@ -52,7 +52,7 @@ Function Enable-AzVMAutoShutdown {
 }
 
 Connect-AzAccount -Tenant $TenantId -Subscription $Subscription  | Out-Null
-$AllAVDs = Get-AzVm -ResourceGroupName $resourceGroupName | Where-Object { ($_.Name -eq "AVDPNE-1530") -or ($_.Name -eq "AVDPNE-137") }
+$AllAVDs = Get-AzVm -ResourceGroupName $resourceGroupName
 
 Write-Host "Working on enabling the AutoShutdown setting..." -ForegroundColor 'Yellow'
 Foreach ($AVD in $AllAVDs) {
