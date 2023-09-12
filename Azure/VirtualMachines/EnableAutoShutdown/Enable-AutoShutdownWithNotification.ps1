@@ -1,32 +1,14 @@
 
 param(
-        [Parameter(Mandatory,
-            HelpMessage = "Enter the Tenand Id.")] 
-        $TenantId,
-        [Parameter(Mandatory,
-            HelpMessage = "Enter your name of the Azure subscription.")] 
-        $subscription
-        [Parameter(Mandatory,
-            HelpMessage = "The Azure subscription id.")] 
-        $subscriptionId,
-        [Parameter(Mandatory,
-            HelpMessage = "Resource group name which contains the Azure VM.")]
-        $resourceGroupName,
-        [Parameter(Mandatory,
-            HelpMessage = "Name of the Azure VM.")] 
-        $vmName,
-        [Parameter(Mandatory,
-            HelpMessage = "Location of Azure VM.")] 
-        $location,
-        [Parameter(Mandatory,
-            HelpMessage = "Set the auto-shutdown time in a similar way like this 2215 for 10:15 PM.")] 
-        $time,
-        [Parameter(Mandatory,
-            HelpMessage = "The concerned timezone which you need to set. For eg. India Standard Time.")] 
-        $timezone,
-        [Parameter(Mandatory,
-            HelpMessage = "Receipient's Email address for sending Email notification of autoshutdown.")]
-        $emailrecipient
+        [Parameter(Mandatory,HelpMessage = "Enter the Tenand Id.")] $TenantId,
+        [Parameter(Mandatory, HelpMessage = "Enter the name of Azure subscription.")] $subscription,
+        [Parameter(Mandatory, HelpMessage = "Enter the Azure subscription id.")] $subscriptionId,
+        [Parameter(Mandatory, HelpMessage = "Enter the Resource group name which contains Azure VM.")] $resourceGroupName,
+        [Parameter(Mandatory, HelpMessage = "Enter the Azure VM Name.")] $vmName,
+        [Parameter(Mandatory, HelpMessage = "Enter the Location of Azure VM.")] $location,
+        [Parameter(Mandatory, HelpMessage = "Enter the time for auto-shutdown time. For eg. 2215 for 10:15 PM.")] $time,
+        [Parameter(Mandatory, HelpMessage = "Enter the timezone which you need to set. For eg. India Standard Time.")] $timezone,
+        [Parameter(Mandatory, HelpMessage = "Enter the Receipient's Email address for receipving Email notification of autoshutdown.")] $emailrecipient
 )
 
 Function Enable-AzVMAutoShutdownWithNotification {
