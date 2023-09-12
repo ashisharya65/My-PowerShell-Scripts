@@ -59,7 +59,7 @@ For ($i = 1; $i -le 4; $i++) {
         Write-Host "." -NoNewline -ForegroundColor 'Yellow'     
 }
 
-Write-Host
+Write-Host "`n***************************************************************`n" -ForegroundColor 'Yellow'
 Foreach ($AVD in $AllAVDs) {
     Enable-AzVMAutoShutdown -VMName $AVD.Name
 }
