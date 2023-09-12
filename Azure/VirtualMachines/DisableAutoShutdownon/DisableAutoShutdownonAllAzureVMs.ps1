@@ -1,6 +1,6 @@
 
 param(
-        [Parameter(Mandatory,HelpMessage = "Enter the Tenand Id.")] $TenantId,
+        [Parameter(Mandatory, HelpMessage = "Enter the Tenand Id.")] $TenantId,
         [Parameter(Mandatory, HelpMessage = "Enter the name of Azure subscription.")] $subscription,
         [Parameter(Mandatory, HelpMessage = "The Azure subscription id.")] $subscriptionId,
         [Parameter(Mandatory, HelpMessage = "Resource group name which contains the Azure VM.")] $resourceGroupName,
