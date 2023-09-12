@@ -4,7 +4,6 @@ param (
         [Parameter(Mandatory, HelpMessage = "Enter the name of Azure subscription.")] $subscription,
         [Parameter(Mandatory, HelpMessage = "The Azure subscription id.")] $subscriptionId,
         [Parameter(Mandatory, HelpMessage = "Resource group name which contains the Azure VM.")] $resourceGroupName,
-        [Parameter(Mandatory, HelpMessage = "Name of the Azure VM.")] $vmName,
         [Parameter(Mandatory, HelpMessage = "Location of Azure VM.")] $location,
         [Parameter(Mandatory, HelpMessage = "Set the autoshutdown time in a similar way like this 2215 for 10:15 PM.")] $time,
         [Parameter(Mandatory, HelpMessage = "The concerned timezone which you need to set. For eg. India Standard Time.")] $timezone 
@@ -54,7 +53,12 @@ Function Enable-AzVMAutoShutdown {
 Connect-AzAccount -Tenant $TenantId -Subscription $Subscription  | Out-Null
 $AllAVDs = Get-AzVm -ResourceGroupName $resourceGroupName
 
-Write-Host "Working on enabling the AutoShutdown setting..." -ForegroundColor 'Yellow'
+Write-Host "Working on enabling the AutoShutdown setting " -ForegroundColor 'Yellow' -NoNewline
+For ($i = 1; $i -le 4; $i++) {
+        Start-sleep 1
+        Write-Host "." -NoNewline -ForegroundColor 'Yellow'     
+}
+
 Foreach ($AVD in $AllAVDs) {
     Enable-AzVMAutoShutdown -VMName $AVD.Name
 }
