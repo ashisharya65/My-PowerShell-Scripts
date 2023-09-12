@@ -1,8 +1,11 @@
-Connect-AzAccount
 
-Function Enable-AzVMAutoShutdownWithNotification {
-    [CmdletBinding()]
-    param(
+param(
+        [Parameter(Mandatory,
+            HelpMessage = "Enter the Tenand Id.")] 
+        $TenantId,
+        [Parameter(Mandatory,
+            HelpMessage = "Enter your name of the Azure subscription.")] 
+        $subscription
         [Parameter(Mandatory,
             HelpMessage = "The Azure subscription id.")] 
         $subscriptionId,
@@ -19,13 +22,17 @@ Function Enable-AzVMAutoShutdownWithNotification {
             HelpMessage = "Set the auto-shutdown time in a similar way like this 2215 for 10:15 PM.")] 
         $time,
         [Parameter(Mandatory,
-            HelpMessage = "The concerned timezone which you need to set. For eg. Indian Standard Time.")] 
+            HelpMessage = "The concerned timezone which you need to set. For eg. India Standard Time.")] 
         $timezone,
         [Parameter(Mandatory,
             HelpMessage = "Receipient's Email address for sending Email notification of autoshutdown.")]
         $emailrecipient
-    )
+)
 
+Function Enable-AzVMAutoShutdownWithNotification {
+    param(
+        $VMName
+    )
     $token = Get-AzAccessToken
 
     $authHeader = @{
@@ -39,7 +46,7 @@ Function Enable-AzVMAutoShutdownWithNotification {
     $requestbody = @"
 {
     "location" : "$($location)",
-    properties : {
+    "properties" : {
         "dailyRecurrence" : {
             "time" : "$($time)"
         },
@@ -68,6 +75,9 @@ Function Enable-AzVMAutoShutdownWithNotification {
     }
     Catch {
         $errormessage = $_.Exception.Message
-        Write-Error $errormessage
+        Write-Host "$($errormessage)" -ForegroundColor 'Red'
     } 
 }
+
+Connect-AzAccount -Tenant $TenantId -Subscription $Subscription  | Out-Null
+Enable-AzVMAutoShutdownWithNotification -VMName $vmName
