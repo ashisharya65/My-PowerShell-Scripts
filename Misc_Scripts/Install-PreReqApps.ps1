@@ -99,8 +99,17 @@ If ($CurrentWindowsPrincipal.IsInRole([System.Security.Principal.WindowsBuiltInR
     }
 
     # Enabling and installing the Windows Subsystem for linux (WSL) on your device
-    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+    Try{
+        dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+        dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+        Write-Host "WSL componenet have been enabled on this machine" -Foregroundcolor "Green"
+    }
+    Catch {
+        $errormessage = $_.Exception.Message
+        Write-Host "$($errormessage)" -ForegroundColor 'Red'
+    }
+
+    Write-Host "Installing Ubuntu distro WSL" -f 'Yellow'
     wsl --install -d 'Ubuntu-22.04'
 
     # Installing required PowerShell modules
@@ -113,12 +122,20 @@ If ($CurrentWindowsPrincipal.IsInRole([System.Security.Principal.WindowsBuiltInR
         "Pode"
 
     ) | Foreach-Object { 
-        Write-Host "Installing the $_ powershell module on the system.." -ForegroundColor 'Yellow'
-        Install-Module $_ -Scope CurrentUser -Force | Out-Null
-        Write-Host "$_ powershell module is now installed on the device." -ForegroundColor 'Green'
+
+        Try {
+            Write-Host "Installing the $_ powershell module on the system.." -ForegroundColor 'Yellow'
+            Install-Module $_ -Scope CurrentUser -Force -erroraction 'Stop' | Out-Null
+            Write-Host "$_ powershell module is now installed on the device." -ForegroundColor 'Green'
+        }
+        Catch{
+            $errormessage = $_.Exception.Message
+            Write-Host "$($errormessage)" -ForegroundColor 'Red'
+        }
     }
 
     # Setting Terraform Folder and its executable path
+    Write-Host "Setting the Terraform path in the system." -F 'Yellow'
     $TerrformFolderPath = "C:\terraform"
     $TerraformExecutablePath = $TerrformFolderPath + "\Terraform.exe"
     
