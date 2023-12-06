@@ -15,7 +15,7 @@
 #>
 
 # Mentioning Scheduled task details like name, description, trigger & action.
-$TaskName = "Create-DeviceShutdownEventTriggeredSchdTask"
+$TaskName = "DeviceShutdownEventTriggeredSchdTask"
 $Taskdescription = "Task to shutdown the device whenever the user logoff event (Eventid-4647) happens."
 $TaskAction = New-ScheduledTaskAction -Execute "C:\Windows\System32\shutdown.exe" -Argument "/f /s /t 0"
 $CIMTriggerClass = Get-CimClass -ClassName 'MSFT_TaskEventTrigger' -Namespace 'Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger'
