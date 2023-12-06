@@ -15,22 +15,22 @@
 #>
 
 # Prompt to get the path of reset script. You will find the reset script
-$ResetScriptPath = "C:\Temp\ResetDeviceShutdownSchdTask"
+$ResetScriptFolderPath = "C:\Temp\ResetDeviceShutdownSchdTask"
 $ResetScriptContent = @"
 `$DeviceShutDownTaskName = "DeviceShutdownEventTriggeredSchdTask"
 Disable-ScheduledTask -TaskName `$DeviceShutDownTaskName 
 Enable-ScheduledTask -TaskName `$DeviceShutDownTaskName
 "@
-If(!(Test-Path $ResetScriptPath)){
-  New-Item $ResetScriptPath -ItemType Directory -Force | Out-Null
-  $ResetScriptFullPath = $ResetScriptPath + "\Reset.ps1"
-  $ResetScriptContent | Out-File $ResetScriptFullPath
+If(!(Test-Path $ResetScriptFolderPath)){
+  New-Item $ResetScriptFolderPath -ItemType Directory -Force | Out-Null
+  $ResetScriptFilePath = $ResetScriptFolderPath + "\Reset.ps1"
+  $ResetScriptContent | Out-File $ResetScriptFilePath
 }
 
 # Mentioning Scheduled task details like name, description, trigger & action.
 $TaskName = "Reset-DeviceShutdownEventTriggeredSchdTask"
 $Taskdescription = "Reset the device shutdown event triggered schd task when User Connect event is triggered."
-$TaskAction = New-ScheduledTaskAction -Execute $ResetScriptFullPath
+$TaskAction = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument "-NoProfile -ExecutionPolicy RemoteSigned -File '$($ResetScriptFilePath)'"
 $CIMTriggerClass = Get-CimClass -ClassName 'MSFT_TaskSessionStateChangeTrigger' -Namespace 'Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger'
 $TaskTrigger = New-CimInstance -CimClass $CIMTriggerClass -ClientOnly
 $TaskTrigger.StateChange = "3"     # This will enable the "Connection from Remote computer" radio button in settings of schd task
