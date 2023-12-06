@@ -3,7 +3,7 @@
     PowerShell Script to create an event triggered scheduled task to shutdown device after user log off event is triggered.
 
   .DESCRIPTION
-    With this PowerShell script, an event triggered scheduled task will be created on windows device and will be triggered to shutdown the device
+    With this PowerShell script, an event triggered scheduled task will be created on windows device which will be triggered to shutdown the device
     whenever the user logoff event (Event id 4647) is generated in the event viewer.
     
   .NOTES
@@ -15,7 +15,7 @@
 #>
 
 # Mentioning Scheduled task details like name, description, trigger & action.
-$TaskName = "AVD-CreateDeviceShutdownEventTriggeredSchdTask"
+$TaskName = "Create-DeviceShutdownEventTriggeredSchdTask"
 $Taskdescription = "Task to shutdown the device whenever the user logoff event (Eventid-4647) happens."
 $TaskAction = New-ScheduledTaskAction -Execute "C:\Windows\System32\shutdown.exe" -Argument "/f /s /t 0"
 $CIMTriggerClass = Get-CimClass -ClassName 'MSFT_TaskEventTrigger' -Namespace 'Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger'
