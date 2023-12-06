@@ -1,3 +1,3 @@
-$AVDShutDownTaskName = "AVD-CreateDeviceShutdownEventTriggeredSchdTask"
-Disable-ScheduledTask -TaskName $AVDShutDownTaskName 
-Enable-ScheduledTask -TaskName $AVDShutDownTaskName
+$DeviceShutDownTaskName = "DeviceShutdownEventTriggeredSchdTask"
+Disable-ScheduledTask -TaskName $DeviceShutDownTaskName 
+Enable-ScheduledTask -TaskName $DeviceShutDownTaskName
