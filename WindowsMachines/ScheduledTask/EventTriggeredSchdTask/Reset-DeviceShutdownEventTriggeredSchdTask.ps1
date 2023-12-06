@@ -3,8 +3,8 @@
     PowerShell script to Disable & Enable the device shutdown event triggered schd task after the user connect is triggered.
 
   .DESCRIPTION
-    With this PowerShell script, an event triggered schedule task will be created on windows device and will be triggered to disable & then 
-    enable the device shutdown event triggered schedule task, whenever the user connect event is generated in the event viewer.
+    With this PowerShell script, an event triggered schedule task will be created on windows device which will be triggered to reset 
+    the device shutdown event triggered schedule task, whenever the user connect event is generated in the event viewer.
 
   .NOTES
     Author : Ashish Arya
@@ -17,9 +17,9 @@
 # Prompt to get the path of reset script. You will find the reset script
 $ResetScriptPath = "C:\Temp\ResetDeviceShutdownSchdTask"
 $ResetScriptContent = @"
-`$AVDShutDownTaskName = "AVD-CreateDeviceShutdownEventTriggeredSchdTask"
-Disable-ScheduledTask -TaskName `$AVDShutDownTaskName 
-Enable-ScheduledTask -TaskName `$AVDShutDownTaskName
+`$DeviceShutDownTaskName = "DeviceShutdownEventTriggeredSchdTask"
+Disable-ScheduledTask -TaskName `$DeviceShutDownTaskName 
+Enable-ScheduledTask -TaskName `$DeviceShutDownTaskName
 "@
 If(!(Test-Path $ResetScriptPath)){
   New-Item $ResetScriptPath -ItemType Directory -Force | Out-Null
@@ -28,8 +28,8 @@ If(!(Test-Path $ResetScriptPath)){
 }
 
 # Mentioning Scheduled task details like name, description, trigger & action.
-$TaskName = "AVD-ResetDeviceShutdownEventTriggeredSchdTask"
-$Taskdescription = "Disable & Enable device shutdown event triggered schd task when User Connect event is triggered."
+$TaskName = "Reset-DeviceShutdownEventTriggeredSchdTask"
+$Taskdescription = "Reset the device shutdown event triggered schd task when User Connect event is triggered."
 $TaskAction = New-ScheduledTaskAction -Execute $ResetScriptFullPath
 $CIMTriggerClass = Get-CimClass -ClassName 'MSFT_TaskSessionStateChangeTrigger' -Namespace 'Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger'
 $TaskTrigger = New-CimInstance -CimClass $CIMTriggerClass -ClientOnly
