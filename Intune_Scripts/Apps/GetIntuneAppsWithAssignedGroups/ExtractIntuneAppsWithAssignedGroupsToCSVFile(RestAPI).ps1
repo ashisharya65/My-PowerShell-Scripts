@@ -40,7 +40,7 @@ Function Set-EnvtVariables {
     $EnvtVariables = @(
         [PSCustomObject]@{
             Name  = "AZURE_CLIENT_ID"
-            Value = $CliendId
+            Value = $ClientId
         },
         [PSCustomObject]@{
             Name  = "AZURE_CLIENT_SECRET"
