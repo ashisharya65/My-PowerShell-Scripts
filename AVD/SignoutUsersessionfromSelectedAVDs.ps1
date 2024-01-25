@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Powershell script to sign out user's active session from the AVDs.
@@ -10,12 +11,13 @@
 #>
 
 # declaring variables
-Write-Host
-$userUPN = Read-Host -prompt "Enter the user's UPN"
-$username = [cultureinfo]::GetCultureInfo("en-US").TextInfo.ToTitleCase($userUPN.split(".")[0])
-$subscription = $env:AZURE_SUBSCRIPTION
-$tenant = $env:AZURE_TENANT_ID
-$allsessions = @()
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory, HelpMessage = "Enter the user's UPN")] $userUPN,
+    $username = [cultureinfo]::GetCultureInfo("en-US").TextInfo.ToTitleCase($userUPN.split(".")[0]),
+    $subscription = $env:AZURE_SUBSCRIPTION,
+    $tenant = $env:AZURE_TENANT_ID
+)
 
 # Verifying if AZ and AVD powershell modules are installed or not
 @("Az", "Az.DesktopVirtualization") | ForEach-Object {
@@ -48,6 +50,7 @@ $hostpools = Get-AzWvdHostPool | Foreach-Object {
 }
 
 # Looping through all hostpools to get the Active sessions for the user
+$allsessions = @()
 Foreach ($hp in $hostpools) {
     $sessions = Get-AzWvdUserSession -HostPoolName $hp.hostpool -ResourceGroupName $hp.resourcegroup
     Foreach ($session in $sessions) {
@@ -66,9 +69,9 @@ Foreach ($hp in $hostpools) {
     }
 }
 
-Write-Host "`n##################################" -ForegroundColor 'Green'
+Write-Host "`n###################################################################" -ForegroundColor 'Green'
 Write-Host "# $username's active AVD sessions #" -ForegroundColor "Green"
-Write-Host "##################################`n" -ForegroundColor "Green"
+Write-Host "###################################################################`n" -ForegroundColor "Green"
 
 # Displaying all the active user sessions
 $count = 0
