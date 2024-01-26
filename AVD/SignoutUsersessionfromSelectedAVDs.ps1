@@ -15,8 +15,8 @@
 param(
     [Parameter(Mandatory, HelpMessage = "Enter the user's UPN")] $userUPN,
     $username = [cultureinfo]::GetCultureInfo("en-US").TextInfo.ToTitleCase($userUPN.split(".")[0]),
-    $subscription = $env:AZURE_SUBSCRIPTION,
-    $tenant = $env:AZURE_TENANT_ID
+    [Parameter(Mandatory, HelpMessage = "Enter the subscription name")] $subscription,
+   [Parameter(Mandatory, HelpMessage = "Enter the tenant id")] $tenant
 )
 
 # Verifying if AZ and AVD powershell modules are installed or not
