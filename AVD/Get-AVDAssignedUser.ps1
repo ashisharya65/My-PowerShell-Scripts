@@ -14,30 +14,30 @@
     Date   : 06-Feb-2024
 #>
 
-# Connecting to Azure Subscription
-Start-Sleep 1
-Write-host "`nConnecting to Azure..." -ForegroundColor "DarkYellow"
-Start-Sleep 1
-Try {
-    connect-Azaccount -Tenant $tenant -Subscription $subscription -ea 'stop' | Out-Null
-    Start-Sleep 2
-    Write-Host "You were successfully connected to your Azure Tenant." -f 'Green'
-}
-Catch {
-    $errormessage = $_.Exception.Message
-    Write-Error $errormessage
-    Break
-}
- 
 # Function to get the Assigned user
 Function Get-AVDAssignedUser {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory, HelpMessage = "Enter the AVD name")] $AVDName,
+        [Parameter(Mandatory, HelpMessage = "Enter the AVD name")] $avdname,
          [Parameter(Mandatory, HelpMessage = "Enter the subscription name")] $subscription
-         [Parameter(Mandatory, HelpMessage = "Enter the tenant id")] $tenant
+         [Parameter(Mandatory, HelpMessage = "Enter the tenant id")] $tenantid
     )
 
+    # Connecting to Azure Subscription
+    Start-Sleep 1
+    Write-host "`nConnecting to Azure..." -ForegroundColor "DarkYellow"
+    Start-Sleep 1
+    Try {
+        Connect-Azaccount -Tenant $tenantid -Subscription $subscription -ea 'stop' | Out-Null
+        Start-Sleep 2
+        Write-Host "You were successfully connected to your Azure Tenant." -f 'Green'
+    }
+    Catch {
+        $errormessage = $_.Exception.Message
+        Write-Error $errormessage
+        Break
+    }
+    
     # Verifying if AZ and AVD powershell modules are installed or not
     @("Az", "Az.DesktopVirtualization") | ForEach-Object {
         If ($null -eq $(Get-InstalledModule -Name $_)) {
@@ -56,7 +56,7 @@ Function Get-AVDAssignedUser {
 
     # Looping through all the host pools to fing the right AVD and print the Assigned user name
     foreach ($Hp in $hostpools) {
-        $AssignedUser = (Get-AzWVDSessionHost -HostPoolName $Hp.hostpool -ResourceGroupName $Hp.resourcegroup -sessionhostname $AVDName -ea 'SilentlyContinue').AssignedUser
+        $AssignedUser = (Get-AzWVDSessionHost -HostPoolName $Hp.hostpool -ResourceGroupName $Hp.resourcegroup -sessionhostname $avdname -ea 'SilentlyContinue').AssignedUser
         If (!([String]::IsnullorEmpty($AssignedUser))) {
             Write-Host "`n##############################################################" -f "Cyan"
             Write-Host "Assigned User: $($AssignedUser)" -f "Cyan"
