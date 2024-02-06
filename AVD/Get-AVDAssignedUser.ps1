@@ -23,6 +23,15 @@ Function Get-AVDAssignedUser {
          [Parameter(Mandatory, HelpMessage = "Enter the tenant id")] $tenantid
     )
 
+       
+    # Verifying if AZ and AVD powershell modules are installed or not
+    @("Az", "Az.DesktopVirtualization") | ForEach-Object {
+        If ($null -eq $(Get-InstalledModule -Name $_)) {
+            Write-Host "$_ powershell module is not installed on your machine. Hence installing it."
+            Install-Module $_ -Scope 'CurrentUser' -Force
+        }
+    }
+
     # Connecting to Azure Subscription
     Start-Sleep 1
     Write-host "`nConnecting to Azure..." -ForegroundColor "DarkYellow"
@@ -38,14 +47,6 @@ Function Get-AVDAssignedUser {
         Break
     }
     
-    # Verifying if AZ and AVD powershell modules are installed or not
-    @("Az", "Az.DesktopVirtualization") | ForEach-Object {
-        If ($null -eq $(Get-InstalledModule -Name $_)) {
-            Write-Host "$_ powershell module is not installed on your machine. Hence installing it."
-            Install-Module $_ -Scope 'CurrentUser' -Force
-        }
-    }
-
     # Getting the host pools
     $hostpools = Get-AzWvdHostPool | Foreach-Object {
         [PSCustomObject]@{
