@@ -81,7 +81,7 @@ function New-VirtualNetworkPeering {
     )
     try {
         Add-AzVirtualNetworkPeering -Name $Name -VirtualNetwork $VirtualNetwork1 -RemoteVirtualNetworkId $VirtualNetwork2.Id | Out-Null
-        Write-Host "VNet peering was successfully created from $($VirtualNetwork1.Name) to $($VirtualNetwork2.Name)." -ForegroundColor DarkGreen
+        Write-Host "VNet peering has been successfully created from $($VirtualNetwork1.Name) to $($VirtualNetwork2.Name)." -ForegroundColor DarkGreen
     }
     catch {
         Handle-Error -ErrorMessage $_.Exception.Message
