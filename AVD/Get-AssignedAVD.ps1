@@ -77,7 +77,7 @@ function Get-AssignedAVD {
     }
 
     # Looping through all the host pool to fing the right AVD and print the Assigned user name
-    $AVDList = [System.Collections.Generic.List[string]]@()
+    $AVDList = [System.Collections.Generic.List[Object]]@()
     foreach ($Hp in $hostpools) {
         try {
             $AVDs = Get-AzWVDSessionHost -HostPoolName $Hp.hostpool -ResourceGroupName $Hp.resourcegroup -ea Stop
