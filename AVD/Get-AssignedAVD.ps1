@@ -44,16 +44,16 @@ function Get-AssignedAVD {
         [string][Parameter(Mandatory, HelpMessage = "Enter the Azure tenant id")]$tenantid
     )
 
-    # Verifying if AZ and AVD powershell modules are installed or not
+    # Verifying if AZ and AVD PowerShell modules are installed or not
     @("Az", "Az.DesktopVirtualization") | ForEach-Object {
         If ($null -eq $(Get-InstalledModule -Name $_)) {
-            Write-Host "$_ powershell module is not installed on your machine. Hence installing it."
+            Write-Host "$_ PowerShell module is not installed on your machine. Hence installing it."
             Install-Module $_ -Scope 'CurrentUser' -Force
         }
     }
 
     # Connecting to Azure Subscription
-    if([string]::IsNullOrEmpty($Connected)){
+    if(!([string]::IsNullOrEmpty($Connected))){
         Write-host "`nYou are already connected to your Azure tenant." -f "DarkGreen"
     }
     else{
