@@ -5,14 +5,35 @@
     
     .DESCRIPTION
     This script displays the Assigned user of the AVD.
+
+    .PARAMETER avdname
+    The name of the AVD.
+    
+    .PARAMETER subcription
+    The name of your Azure subscription.
+    
+    .PARAMETER tenantid
+    Your tenant id.
+    
+    .INPUTS
+    Prompts for AVD name, subscription name & tenantid
+    
+    .OUTPUTS
+    System.String. You will be getting the Assigned user name for the input AVD.
     
     .EXAMPLE
-    .\Get-AVDAssignedUser -AVDName <AVDName>
+    .\Get-AVDAssignedUser 
     
     .NOTES
     Author : Ashish Arya
     Date   : 06-Feb-2024
 #>
+
+# Function to handle errors
+function Handle-Error {
+    Param([string]$ErrorMessage)
+    Write-Host $ErrorMessage -ForegroundColor "Red"
+}
 
 # Function to get the Assigned user
 Function Get-AVDAssignedUser {
@@ -39,19 +60,23 @@ Function Get-AVDAssignedUser {
         Write-Host "You were successfully connected to your Azure Tenant." -f 'Green'
     }
     Catch {
-        $errormessage = $_.Exception.Message
-        Write-Error $errormessage
+        Handle-Error -ErrorMessage $_.Exception.Message
         Break
     }
     
     # Getting the host pools
-    $hostpools = Get-AzWvdHostPool | Foreach-Object {
-        [PSCustomObject]@{
-            hostpool      = $_.name
-            resourcegroup = ($_.id -split "/")[4]
+    try {
+        $hostpools = Get-AzWvdHostPool -ea Stop | Foreach-Object {
+            [PSCustomObject]@{
+                    hostpool      = $_.name
+                    resourcegroup = ($_.id -split "/")[4]
+            }
         }
     }
-
+    catch{
+        Handle-Error -ErrorMessage $_.Exception.Message
+    }
+    
     # Looping through all the host pools to find the right AVD and print the Assigned user name
     foreach ($Hp in $hostpools) {
         $AssignedUser = (Get-AzWVDSessionHost -HostPoolName $Hp.hostpool -ResourceGroupName $Hp.resourcegroup -sessionhostname $avdname -ea 'SilentlyContinue').AssignedUser
