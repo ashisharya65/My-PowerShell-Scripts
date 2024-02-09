@@ -1,11 +1,11 @@
 
 <#
     .SYNOPSIS
-        Powershell script to log off the user's active session from the AVDs.
+    Powershell script to log off the user's active session from the AVDs.
         
     .DESCRIPTION
-        This script displays the user's active sessions across all AVD host pools 
-        and prompts the user to enter the specific AVD for clearing the session.
+    This script displays the user's active sessions on the Avds from all the AVD host pools 
+    and prompts the user to enter the specific AVD for logging off the session.
 
     .PARAMETER userUPN
     The user's userpricipalname.
@@ -27,7 +27,7 @@
     
     .NOTES
     Author : Ashish Arya
-    Date  : 23 Jan 2024
+    Date   : 23 Jan 2024
 #>
 
 # declaring variables
