@@ -19,26 +19,23 @@ Function Get-AVDAssignedUser {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, HelpMessage = "Enter the AVD name")] $avdname,
-         [Parameter(Mandatory, HelpMessage = "Enter the subscription name")] $subscription
+         [Parameter(Mandatory, HelpMessage = "Enter the subscription name")] $subscription,
          [Parameter(Mandatory, HelpMessage = "Enter the tenant id")] $tenantid
     )
 
        
-    # Verifying if AZ and AVD powershell modules are installed or not
+    # Verifying if AZ and AVD PowerShell modules are installed or not
     @("Az", "Az.DesktopVirtualization") | ForEach-Object {
         If ($null -eq $(Get-InstalledModule -Name $_)) {
-            Write-Host "$_ powershell module is not installed on your machine. Hence installing it."
+            Write-Host "$_ PowerShell module is not installed on your machine. Hence installing it."
             Install-Module $_ -Scope 'CurrentUser' -Force
         }
     }
 
     # Connecting to Azure Subscription
-    Start-Sleep 1
     Write-host "`nConnecting to Azure..." -ForegroundColor "DarkYellow"
-    Start-Sleep 1
     Try {
         Connect-Azaccount -Tenant $tenantid -Subscription $subscription -ea 'stop' | Out-Null
-        Start-Sleep 2
         Write-Host "You were successfully connected to your Azure Tenant." -f 'Green'
     }
     Catch {
@@ -55,7 +52,7 @@ Function Get-AVDAssignedUser {
         }
     }
 
-    # Looping through all the host pools to fing the right AVD and print the Assigned user name
+    # Looping through all the host pools to find the right AVD and print the Assigned user name
     foreach ($Hp in $hostpools) {
         $AssignedUser = (Get-AzWVDSessionHost -HostPoolName $Hp.hostpool -ResourceGroupName $Hp.resourcegroup -sessionhostname $avdname -ea 'SilentlyContinue').AssignedUser
         If (!([String]::IsnullorEmpty($AssignedUser))) {
