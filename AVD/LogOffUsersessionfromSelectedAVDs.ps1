@@ -1,11 +1,31 @@
 
 <#
-.SYNOPSIS
-    Powershell script to sign out user's active session from the AVDs.
-.DESCRIPTION
-    This script displays the user's active sessions across all AVD host pools 
-    and prompts the user to enter the specific AVD for clearing the session.
-.NOTES
+    .SYNOPSIS
+        Powershell script to log off the user's active session from the AVDs.
+        
+    .DESCRIPTION
+        This script displays the user's active sessions across all AVD host pools 
+        and prompts the user to enter the specific AVD for clearing the session.
+
+    .PARAMETER userUPN
+    The user's userpricipalname.
+    
+    .PARAMETER subscription
+    The Azure subcription name.
+    
+    .PARMETER tenantid
+    The Azure tenant id.
+    
+    .INPUTS
+    The program inputs for user's UPN, subcription and tenant id of your Azure tenant.
+    
+    .OUTPUTS
+    System.Collections.Generic.List. The program outputs the list of AVDs where the user session is currently active.
+    
+    .EXAMPLE
+    .\LogOffUsersessionfromSelectedAVDs.ps1
+    
+    .NOTES
     Author : Ashish Arya
     Date  : 23 Jan 2024
 #>
@@ -16,41 +36,56 @@ param(
     [Parameter(Mandatory, HelpMessage = "Enter the user's UPN")] $userUPN,
     $username = [cultureinfo]::GetCultureInfo("en-US").TextInfo.ToTitleCase($userUPN.split(".")[0]),
     [Parameter(Mandatory, HelpMessage = "Enter the subscription name")] $subscription,
-   [Parameter(Mandatory, HelpMessage = "Enter the tenant id")] $tenant
+   [Parameter(Mandatory, HelpMessage = "Enter the tenant id")] $tenantid
 )
 
-# Verifying if AZ and AVD powershell modules are installed or not
+# Function to handle error
+function Handle-Error {
+    param([string]$Errormessage)
+    Write-Host $Errormessage -ForegroundColor "Red"
+
+}
+
+# Verifying if AZ and AVD PowerShell modules are installed or not
 @("Az", "Az.DesktopVirtualization") | ForEach-Object {
     If ($null -eq $(Get-InstalledModule -Name $_)) {
-        Write-Host "$_ powershell module is not installed on your machine. Hence installing it."
+        Write-Host "$_ PowerShell module is not installed on your machine. Hence installing it."
         Install-Module $_ -Scope 'CurrentUser' -Force
     }
 }
 
 # Connecting to Azure Subscription
-Start-Sleep 1
-Write-host "`nConnecting to Azure..." -ForegroundColor "DarkYellow"
-Start-Sleep 1
-Try {
-    connect-Azaccount -Tenant $tenant -Subscription $subscription -ea 'stop' | Out-Null
-    Start-Sleep 2
-    Write-Host "You were successfully connected to your Azure account." -f 'Green'
+if(!([string]::IsNullOrEmpty($Connected))){
+        Write-host "`nYou are already connected to your Azure tenant." -f "DarkGreen"
 }
-Catch {
-    $errormessage = $_.Exception.Message
-    Write-Error $errormessage
+else{
+     Write-host "`nConnecting to Azure..." -ForegroundColor "DarkYellow"
+     Try {
+         $Connected = connect-Azaccount -Tenant $tenantid -Subscription $subscription -ea 'stop'# | Out-Null
+         Write-Host "Successfully connected to your Azure tenant." -f 'DarkGreen'
+     }
+     Catch {
+         Handle-Error -Errormessage $_.Exception.Message
+         Break
+     }
 }
 
 # Getting the host pools
-$hostpools = Get-AzWvdHostPool | Foreach-Object {
-    [PSCustomObject]@{
-        hostpool      = $_.name
-        resourcegroup = ($_.id -split "/")[4]
+try {
+    $hostpools = Get-AzWvdHostPool -Ea Stop | Foreach-Object {
+        [PSCustomObject]@{
+            hostpool      = $_.name
+            resourcegroup = ($_.id -split "/")[4]
+        }
     }
 }
+Catch {
+    Handle-Error -Errormessage $_.Exception.Message
+}
+
 
 # Looping through all hostpools to get the Active sessions for the user
-$allsessions = @()
+$allsessions = [System.Collections.Generic.List[Object]]@()
 Foreach ($hp in $hostpools) {
     $sessions = Get-AzWvdUserSession -HostPoolName $hp.hostpool -ResourceGroupName $hp.resourcegroup
     Foreach ($session in $sessions) {
@@ -64,7 +99,7 @@ Foreach ($hp in $hostpools) {
                 resourcegroup = $hp.resourcegroup
             }
 
-            $allsessions += $psobject
+            $allsessions.Add($psobject) | Out-Null
         }
     }
 }
@@ -76,26 +111,25 @@ Write-Host "###################################################################`
 # Displaying all the active user sessions
 $count = 0
 if ($allsessions.Count -eq 0) {
-    Write-Host ("There are no active user sessions.Hence, exiting the script...`n") -ForegroundColor "DarkYellow"
-    Start-Sleep 1
+    Write-Host ("There are no active user sessions. Hence, exiting the script...`n") -ForegroundColor "DarkYellow"
     Exit
 }
 else {
     For ($i = 0; $i -lt $allsessions.count; $i++) {
         $Count += 1
-        If ($allsessions.count -eq 1) {
+        if ($allsessions.count -eq 1) {
             Write-Host ("$($allsessions[$i].name)") -ForegroundColor "Cyan"
         }
-        ElseIf ($allsessions.count -gt 1) {
+        elseIf ($allsessions.count -gt 1) {
             Write-Host ("$count. $($allsessions[$i].name)") -ForegroundColor "Cyan"
         }
     }
 }
 
-# Prompting the user to choice if he/she wants his/her active session removed from the concerned AVD
+# Prompting the user to choose if he/she wants his/her active session removed from the concerned AVD
 Write-Host
 Foreach ($s in $allsessions) {
-    $choice = Read-Host -prompt "Do you want to clear user's session from one of the AVDs - (y/n)"
+    $choice = Read-Host -prompt "Do you want to clear the user's session from one of the AVDs - (y/n)"
     Write-Host
     switch ($choice) {
         "y" {
