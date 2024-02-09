@@ -22,7 +22,7 @@
     None    
     
     .EXAMPLE
-    .\PromptUserForLogOffAVDActiveSession.ps1
+    .\SelectAVDForLogOffActiveSession.ps1
     
     .NOTES
     Author : Ashish Arya
