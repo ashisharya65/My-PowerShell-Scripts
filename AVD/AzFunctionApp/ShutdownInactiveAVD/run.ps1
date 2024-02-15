@@ -1,3 +1,16 @@
+<#
+
+    .SYNOPSIS
+    Azure function app script to shut down the Azure Virtual Desktop machines that do not have an active user session.
+
+    .DESCRIPTION
+    You can use that script in your PowerShell Azure function app to shut down the AVDs which are having no active user session.
+
+    .NOTES
+    AUTHOR : Ashish Arya
+    Date   : 18-Jan-2024
+
+#>
 
 # For the Function App
 param($Timer)
@@ -12,7 +25,7 @@ Write-Output "##########################################`n"
 $AVDRG = "AVDs resource group name"
 $RegExPattern = "Regular expression pattern for fetching the running AVDs from the above mentioned resource group"
 
-# Declaring the concerned hostpools
+# Declaring the concerned host pools
 $allHostPools = @(
     [pscustomobject]@{
         HostPool   = "HostPool Name"
@@ -24,7 +37,7 @@ $allHostPools = @(
     }
 )
 
-# Looping through the hostpools
+# Looping through the host pools
 For ($i = 0; $i -lt $allHostPools.Length; $i++) {
 
     $pool = $allHostPools[$i].HostPool
