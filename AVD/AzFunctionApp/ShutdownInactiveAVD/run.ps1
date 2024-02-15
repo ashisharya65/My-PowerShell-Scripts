@@ -7,7 +7,7 @@
     You can use that script in your PowerShell Azure function app to shut down the AVDs which are having no active user session.
 
     .NOTES
-    AUTHOR : Ashish Arya
+    Author : Ashish Arya
     Date   : 18-Jan-2024
 
 #>
@@ -52,21 +52,22 @@ For ($i = 0; $i -lt $allHostPools.Length; $i++) {
     $VMs = Get-AzVM -ResourceGroupName $AVDRG -Status | Where-Object { ($_.Name -match "$RegExPattern") -and ($_.PowerState -ne "VM deallocated") } |`
         Sort-Object { [int]($_.Name -replace '.*-(\d+)', '$1') }
 
-    $Count = 0
     $DeallocatedVMsCount = 0    
     # Looping through all the running AVDs
     Foreach ($VM in $VMs) {
         $AVDName = $VM.Name          
+        
         # Getting the AVD details
         $AVD = Get-AzWvdSessionHost -HostPoolName $Pool -ResourceGroupName $PoolRg -Name "$($AVDName)" -ErrorAction 'Silentlycontinue'        
+        
         # Selecting those active Win11 AVDs which are there at the AVD portal
         If(-not(([string]::IsNullOrWhiteSpace($AVD))-or([string]::IsNullOrEmpty($AVD)))){
-            $Count += 1
-            # Stopping those AVDs which are in Drain mode off state and does not have any active session
+        
+            # Stopping those AVDs that are in Drain mode off state and do not have any active session
             If (($AVD.AllowNewSession -eq $true) -and ($AVD.Session -eq 0)) {
                 Try {
                     Stop-AzVM -Name $AVDName -ResourceGroupName $VMRG -Force -NoWait -ErrorAction 'Stop' | Out-Null
-                    Write-Output "$count. The $AVDName AVD does not have any active user session. Hence, shutting it down."
+                    Write-Output "The $AVDName AVD does not have any active user session. Hence, shutting it down."
                     $DeallocatedVMsCount += 1
                 }
                 Catch {
@@ -75,7 +76,7 @@ For ($i = 0; $i -lt $allHostPools.Length; $i++) {
                 }
             }
             Else {
-                Write-Output "$Count. The $AVDName AVD already has an active user session."
+                Write-Output "The $AVDName AVD already has an active user session."
             }
         }
     }      
