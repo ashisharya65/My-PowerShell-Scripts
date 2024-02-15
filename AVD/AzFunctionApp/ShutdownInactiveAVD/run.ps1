@@ -4,6 +4,9 @@
     Azure function app script to shut down the Azure Virtual Desktop machines that do not have an active user session.
 
     .DESCRIPTION
+    This is for a Timer-Triggered Azure function which runs on a schedule defined in the function.json file (which you will find in the same
+    the directory that holds this script as well).
+    
     You can use that script in your PowerShell Azure function app to shut down the AVDs which are having no active user session.
 
     .NOTES
