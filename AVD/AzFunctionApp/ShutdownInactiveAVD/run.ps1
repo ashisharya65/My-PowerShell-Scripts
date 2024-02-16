@@ -8,7 +8,8 @@
     the directory that holds this script as well).
     
     You can use that script in your PowerShell Azure function app to shut down the AVDs which are having no active user session.
-
+    For this script, you need to have the Az and Az.DesktopVirtualization PowerShell modules installed on your machine.
+    
     .NOTES
     Author : Ashish Arya
     Date   : 18-Jan-2024
