@@ -1,3 +1,3 @@
 # My PowerShell Scripts
 
-This repo contains scripts that I have created.
+This repository stores all the PowerShell scripts written by me.
