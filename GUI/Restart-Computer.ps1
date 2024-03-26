@@ -1,5 +1,13 @@
 <#
-    Script to create a WPF form that gives you the option to either restart your device or cancel the restart.
+    .SYNOPSIS
+        PowerShell GUI app for a scheduled restart.
+    .DESCRIPTION
+        This is a PowerShell script that will show a form to prompt the user for a scheduled restart in next 10 minutes.
+    .NOTES
+        Author : Ashish Arya
+        Date   : 26-March-2024
+    .EXAMPLE
+        .\Restart-Computer.ps1
 #>
 
 # Loading the assembly
@@ -16,16 +24,16 @@ $inputXAML = @"
         mc:Ignorable="d"
         Title="Restart-Computer" Height="190" Width="474">
     <Grid>
-        <Label Content="The Drive redirection policy is allowed now." HorizontalAlignment="Left" Margin="121,26,0,0" VerticalAlignment="Top"/>
-        <Label Content="Do you want to restart your machine to reflect the changes asap?" HorizontalAlignment="Left" Margin="54,48,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="YesButton" Content="Yes" HorizontalAlignment="Left" Margin="127,90,0,0" VerticalAlignment="Top" Height="29" Width="40" FontWeight="Bold" FontSize="14"/>
-        <Button x:Name="NoButton" Content="No" HorizontalAlignment="Left" Margin="298,90,0,0" VerticalAlignment="Top" Height="29" Width="40" FontWeight="Bold" FontSize="14" RenderTransformOrigin="-0.297,1.331"/>
+        <Label Content="The Drive redirection policy is allowed now." HorizontalAlignment="Left" Margin="108,22,0,0" VerticalAlignment="Top"/>
+        <Label Content="Do you want to restart your machine to reflect the changes?" HorizontalAlignment="Left" Margin="54,48,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="YesButton" Content="Yes" HorizontalAlignment="Left" Margin="120,88,0,0" VerticalAlignment="Top" Height="29" Width="40" FontWeight="Bold" FontSize="14"/>
+        <Button x:Name="NoButton" Content="No" HorizontalAlignment="Left" Margin="291,88,0,0" VerticalAlignment="Top" Height="29" Width="40" FontWeight="Bold" FontSize="14" RenderTransformOrigin="-0.297,1.331"/>
 
     </Grid>
 </Window>
 "@
 
-# Correcting the XML
+# Correcting the XAML
 $inputXAML = $inputXAML -replace 'mc:Ignorable="d"', '' -replace "x:N", "N" -replace '^<Win.*', '<Window'
 [xml]$xaml = $inputXAML
 
@@ -39,13 +47,11 @@ $NoButton = $Window.FindName('NoButton')
 
 # Button Click controls
 $YesButton.add_click({
-        $Message = "Your computer is going to restart in next 10 minutes. Please save your work and wait for scheduled restart."
         Shutdown.exe -r -f -t 600
         $Window.close()
     })
 
 $NoButton.add_click({
-        $Message = "The scheduled restart has been cancelled."
         shutdown.exe -a 
         $Window.close()
     })
