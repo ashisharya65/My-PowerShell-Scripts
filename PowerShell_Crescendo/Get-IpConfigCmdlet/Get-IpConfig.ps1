@@ -1,8 +1,11 @@
+<#
+    All the commands which will be helping you to create your own PowerShell cmdlet called Get-IpConfig.
+#>
+
 # Install Crescendo
 Install-Module -Name Microsoft.PowerShell.Crescendo -Force
 # Install using PowerShellGet v3
 Install-PSResource Microsoft.PowerShell.Crescendo -Reinstall
-
 
 # Create a new PowerShell Crescendo configuration
 $NewConfiguration = @{
