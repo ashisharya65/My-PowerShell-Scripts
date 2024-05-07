@@ -30,12 +30,21 @@ Import-Module "$($PSScriptRoot)\ipconfig.crescendo.psd1"
 # View commands available in the module
 Get-Command -module ipconfig.crescendo
 
-# Run the new cmdlet, notice that all it is doing currently is running docker.exe, with no arguments
+# Run the new cmdlet, notice that all it is doing currently is running ipconfig.exe, with no arguments
 Get-IpConfig
-Get-IpConfig -all
 
 # clean up the powershell module before we make changes and re-import the module
 Remove-Module ipconfig.crescendo
 Remove-Item .\ipconfig.crescendo.psd1
 Remove-Item .\ipconfig.crescendo.psm1
+
+# Use crescendo to create the PowerShell module again
+Export-CrescendoModule -ConfigurationFile .\docker.crescendo.json -ModuleName docker.crescendo.psm1
+
+# Import the module we just created
+Import-Module .\docker.crescendo.psd1
+
+# Call Get-IpConfig with the -all parameter, which will show all the ip addresses assigned to the machine
+Get-IpConfig -all
+
 
