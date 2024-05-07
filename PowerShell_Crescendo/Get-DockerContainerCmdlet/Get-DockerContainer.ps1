@@ -1,6 +1,4 @@
 # This is a set of commands that accompanies a blog post and Youtube video about PowerShell Crecsendo
-# https://www.youtube.com/mattallford
-# www.mattallford.com
 
 # Install Crescendo
 Install-Module -Name Microsoft.PowerShell.Crescendo -Force
