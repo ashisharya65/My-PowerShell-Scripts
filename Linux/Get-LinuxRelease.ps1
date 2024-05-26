@@ -67,11 +67,11 @@ function Get-LinuxRelease {
         }
 
         $IsWindows {
-            Write-Error "The function is only written for linux machine."
+            throw "The function is only written for linux machine."
         }
 
         $IsMacOS {
-            Write-Error "The function is only written for linux machine."
+            throw "The function is only written for linux machine."
         }
     }
 }
