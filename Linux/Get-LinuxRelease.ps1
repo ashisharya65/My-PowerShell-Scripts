@@ -37,30 +37,43 @@ function Get-LinuxRelease {
         [string]$filepath = "/etc/os-release"
     )
 
-    if (-not (Test-Path -Path $filepath)) {
-        if (Test-Path '/usr/lib/os-release') {
-            $filepath = '/usr/lib/os-release'
-        }
-        else {
-            throw 'Unable to find os-release file in /etc/ or /usr/lib directories'
-        }
-    }
+    switch($true){
 
-    # Initialize an empty list
-    $osInfoList = [System.Collections.Generic.List[PSObject]]::new()
-    
-    foreach ($line in (Get-Content -Path $filepath)) {
-        if ($line -match "^(.+)=(.+)$") {
-            # Create a custom object for each key-value pair
-            $obj = [pscustomobject]@{
-                key = $matches[1]
-                value = $matches[2].Trim('"')     
+        $IsLinux {
+            if (-not (Test-Path -Path $filepath)) {
+                if (Test-Path '/usr/lib/os-release') {
+                    $filepath = '/usr/lib/os-release'
+                }
+                else {
+                    throw 'Unable to find os-release file in /etc/ or /usr/lib directories'
+                }
             }
-            # Add the object to the list
-            $osInfoList.Add($obj)
+
+            # Initialize an empty list
+            $osInfoList = [System.Collections.Generic.List[PSObject]]::new()
+            
+            foreach ($line in (Get-Content -Path $filepath)) {
+                if ($line -match "^(.+)=(.+)$") {
+                    # Create a custom object for each key-value pair
+                    $obj = [pscustomobject]@{
+                        key = $matches[1]
+                        value = $matches[2].Trim('"')     
+                    }
+                    # Add the object to the list
+                    $osInfoList.Add($obj)
+                }
+            }
+            return $osInfoList  
+        }
+
+        $IsWindows {
+            Write-Error "The function is only written for linux machine."
+        }
+
+        $IsMacOS {
+            Write-Error "The function is only written for linux machine."
         }
     }
-    return $osInfoList
 }
 
 Get-LinuxRelease
