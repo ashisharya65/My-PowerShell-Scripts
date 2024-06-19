@@ -5,7 +5,7 @@ Add-Type -AssemblyName PresentationFramework
 [xml] $xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        Title="Your Voice Matters!" Height="180" Width="430" WindowStartupLocation="CenterScreen">
+        Title="Complete Survey!" Height="180" Width="430" WindowStartupLocation="CenterScreen">
     <Grid>
         <!-- TextBlock for the main message -->
         <TextBlock TextAlignment="Center" VerticalAlignment="Top" Margin="10">
