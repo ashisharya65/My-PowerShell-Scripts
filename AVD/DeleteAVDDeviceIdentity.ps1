@@ -26,7 +26,8 @@ Param(
 )
 
 # Importing the text file of devices having devicename header
-$Devices = Get-Content -path $TextFilePath 
+$Textfilepath = Read-Host -prompt 'Enter the path of text file storing the device names'
+$Devices = Get-Content -path $TextFilePath
 
 # Checking and Verifying if the latest version of Az, Microsoft.Graph & Az.DestopVirtualization powerShell modules are installed or not
 Write-Host "Checking the required PowerShell modules are already installed or not..." -ForegroundColor 'Yellow'
