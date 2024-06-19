@@ -1,6 +1,6 @@
 
 # Check if the registry key exists and its value
-$KeyPath = "HKLM:\SOFTWARE\Packaging\FillSurvey"
+$KeyPath = "HKLM:\SOFTWARE\CustomReg\FillSurvey"
 $KeyName = "IsSurveyFilled"
 $RegKeyValue = Get-ItemProperty -Path $KeyPath -Name $KeyName -ErrorAction SilentlyContinue
 
