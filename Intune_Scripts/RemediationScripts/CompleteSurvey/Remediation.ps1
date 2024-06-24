@@ -18,7 +18,7 @@ Add-Type -AssemblyName PresentationFramework
 [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        Title="[VNEXT] Your Voice Matters!" Height="200" Width="525" WindowStartupLocation="CenterScreen" Background="#7199D7" FontSize="16" FontFamily="Cambria">
+        Title="Your Voice Matters!" Height="200" Width="525" WindowStartupLocation="CenterScreen" Background="#7199D7" FontSize="16" FontFamily="Cambria">
     <Grid>
         <!-- TextBlock for the main message -->
         <TextBlock TextAlignment="Center" VerticalAlignment="Top" Margin="10" Foreground="#000000" FontSize="16">
