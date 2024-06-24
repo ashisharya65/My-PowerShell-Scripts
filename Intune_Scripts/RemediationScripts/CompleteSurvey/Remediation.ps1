@@ -7,43 +7,59 @@
     survey or doing it later. The script also manages registry keys to track survey completion status.
 
 .NOTES
-    File Name      : CompleteSurvey.ps1
     Author         : Ashish Arya
-    Prerequisite   : Requires the PresentationFramework assembly
+    Prerequisite   : Requires the PresentationFramework assembly.
 #>
 
 # Add-Type cmdlet to load the PresentationFramework assembly
 Add-Type -AssemblyName PresentationFramework
 
 # XAML content for the window
-[xml] $xaml = @"
+[xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        Title="Your Voice Matters!" Height="180" Width="430" WindowStartupLocation="CenterScreen">
+        Title="[VNEXT] Your Voice Matters!" Height="200" Width="525" WindowStartupLocation="CenterScreen" Background="#7199D7" FontSize="16" FontFamily="Cambria">
     <Grid>
         <!-- TextBlock for the main message -->
-        <TextBlock TextAlignment="Center" VerticalAlignment="Top" Margin="10">
-            <Run>Your feedback is vital to improving our services.</Run>
+        <TextBlock TextAlignment="Center" VerticalAlignment="Top" Margin="10" Foreground="#000000" FontSize="16">
+            <Run FontSize="16">Your feedback is vital to improving our services.</Run>
             <LineBreak/>
-            <Run>Please complete this mandatory survey</Run>
-            <Run FontWeight="Bold" xml:space="preserve"> now </Run> <!-- Bold "now" text -->
-            <Run>to help us serve you better.</Run>
+            <Run FontSize="16">Please complete this mandatory survey</Run>
+            <Run FontSize="16" xml:space="preserve" Foreground="Blue"> now </Run> <!-- Bold "now" text -->
+            <Run FontSize="16" Foreground="#000000">to help us serve you better.</Run>
             <LineBreak/>
         </TextBlock>
         
         <!-- TextBlock for the duration -->
-        <TextBlock TextAlignment="Center" VerticalAlignment="Center" Margin="10">
-            <Run FontWeight="Bold" xml:space="preserve">Duration: 3mins</Run> <!-- Bold duration text -->
+        <TextBlock TextAlignment="Center" VerticalAlignment="Center" Margin="10" Foreground="White">
+            <Run FontSize="14" FontWeight="Bold" xml:space="preserve" Foreground="#000000">Duration: 3mins</Run> <!-- Bold duration text -->
         </TextBlock>
         
         <!-- StackPanel for buttons -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
-            <Button Name="FillSurveyButton" Content="Complete the Survey" Width="118" Margin="10"/>
-            <Button Name="DoItLaterButton" Content="Do it Later" Width="90" Margin="10"/>
+            <Button FontSize="14" FontWeight="Bold" Name="FillSurveyButton" Content="Complete the Survey" Width="160" Height="30" Margin="15" Background="#5920EC" Foreground="#FFFFFF">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button FontSize="14" FontWeight="Bold" Name="DoItLaterButton" Content="Do it Later" Width="150" Height="30" Margin="15" Background="#606063" Foreground="#FFFFFF">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>
 "@
+
 
 # Create a new Window from the XAML
 $reader = (New-Object System.Xml.XmlNodeReader $xaml)
@@ -57,7 +73,7 @@ $doItLaterButton = $form.FindName("DoItLaterButton")
 Function Create-RegKey {
     param(
         $RegKeyValue,
-        $KeyPath = "HKCU:\Software\RemediationScripts\FillSurvey",
+        $KeyPath = "HKCU:\Software\Total\RemediationScripts\FillSurvey",
         $Keyname = "IsSurveyFilled",
         $KeyType = "String"
     )
@@ -96,8 +112,8 @@ Function Create-RegKey {
 # Action for the FillSurvey button
 $fillSurveyButton.Add_Click({
     # Open a web browser to the survey link
-    $SurveyLink = "hptts://google.com" 
-    Start-Process $SurveyLink
+    $SurveyLink = "https://google.com"
+    Start-Process $SurveyLink 
 
     # Set registry key to indicate survey completion
     Create-RegKey -RegKeyValue $true 
