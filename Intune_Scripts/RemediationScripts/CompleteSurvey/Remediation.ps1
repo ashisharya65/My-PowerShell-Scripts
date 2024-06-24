@@ -1,3 +1,17 @@
+<#
+.SYNOPSIS
+    Displays a survey window and handles user interactions.
+
+.DESCRIPTION
+    This PowerShell script creates a graphical window using XAML to display a survey message. It includes buttons for completing the 
+    survey or doing it later. The script also manages registry keys to track survey completion status.
+
+.NOTES
+    File Name      : CompleteSurvey.ps1
+    Author         : Ashish Arya
+    Prerequisite   : Requires the PresentationFramework assembly
+#>
+
 # Add-Type cmdlet to load the PresentationFramework assembly
 Add-Type -AssemblyName PresentationFramework
 
@@ -5,7 +19,7 @@ Add-Type -AssemblyName PresentationFramework
 [xml] $xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        Title="Complete Survey!" Height="180" Width="430" WindowStartupLocation="CenterScreen">
+        Title="Your Voice Matters!" Height="180" Width="430" WindowStartupLocation="CenterScreen">
     <Grid>
         <!-- TextBlock for the main message -->
         <TextBlock TextAlignment="Center" VerticalAlignment="Top" Margin="10">
@@ -43,7 +57,7 @@ $doItLaterButton = $form.FindName("DoItLaterButton")
 Function Create-RegKey {
     param(
         $RegKeyValue,
-        $KeyPath = "HKLM:\SOFTWARE\CustomReg\FillSurvey",
+        $KeyPath = "HKCU:\Software\RemediationScripts\FillSurvey",
         $Keyname = "IsSurveyFilled",
         $KeyType = "String"
     )
@@ -82,7 +96,8 @@ Function Create-RegKey {
 # Action for the FillSurvey button
 $fillSurveyButton.Add_Click({
     # Open a web browser to the survey link
-    Start-Process "Survey URL" 
+    $SurveyLink = "URL survey link" 
+    Start-Process $SurveyLink
 
     # Set registry key to indicate survey completion
     Create-RegKey -RegKeyValue $true 
