@@ -96,7 +96,7 @@ Function Create-RegKey {
 # Action for the FillSurvey button
 $fillSurveyButton.Add_Click({
     # Open a web browser to the survey link
-    $SurveyLink = "URL survey link" 
+    $SurveyLink = "hptts://google.com" 
     Start-Process $SurveyLink
 
     # Set registry key to indicate survey completion
