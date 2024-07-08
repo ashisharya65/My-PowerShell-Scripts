@@ -40,7 +40,7 @@ function Get-AssignedAVD {
     [cmdletbinding()]
     Param(
         [string][Parameter(Mandatory, HelpMessage = "Enter the user's userpricipalname")]$userUPN,
-        [string][Parameter(Mandatory, HelpMessage = "Enter the Azure subscription name")]subscription,
+        [string][Parameter(Mandatory, HelpMessage = "Enter the Azure subscription name")]$subscription,
         [string][Parameter(Mandatory, HelpMessage = "Enter the Azure tenant id")]$tenantid
     )
 
