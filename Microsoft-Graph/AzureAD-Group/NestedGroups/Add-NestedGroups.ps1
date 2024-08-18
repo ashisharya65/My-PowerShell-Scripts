@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    This script adds a member group to a parent group in Microsoft Azure Active Directory by reading data from a CSV file.
+    This script adds a member group to a parent group in Microsoft Entra ID by reading data from a CSV file.
 
 .DESCRIPTION
     The script connects to Microsoft Graph using Entra ID credentials stored in environment variables. It checks for the existence of required environment variables and ensures they match expected values. The script logs all activities, including any errors encountered during execution, to a specified log file. It then reads group membership details from a CSV file and adds the specified member group to the parent group in Azure AD.
@@ -19,7 +19,7 @@
 
 .EXAMPLE
     .\Add-NestedGroups.ps1 -Csvfilepath "C:\Path\To\Groups.csv"
-    Runs the script with a specified CSV file to add member groups to parent groups in Azure AD.
+    Runs the script with a specified CSV file to add member groups to parent groups in Entra ID.
 
 .EXAMPLE
     .\Add-NestedGroups.ps1 -Csvfilepath "C:\Path\To\Groups.csv" -LogFilePath "C:\Logs\MyScript.log"
