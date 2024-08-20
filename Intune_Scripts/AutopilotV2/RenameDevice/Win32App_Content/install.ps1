@@ -27,17 +27,13 @@ The name of the scheduled task for the Post-ESPReboot-Notification script.
 The path to the detection tag file used to mark the installation status.
 
 .EXAMPLE
-.\YourScriptName.ps1
+.\Install.ps1
 This command runs the script with default parameters.
 
-.EXAMPLE
-.\YourScriptName.ps1 -PostESPRebootFolderPath "D:\CustomPath\Post-ESPReboot"
-This command runs the script, specifying a custom folder path for the Post-ESPReboot files.
-
 .NOTES
-Author: [Ashish Arya]
-Date: [10-Aug-2024]
 Version: 1.0
+Script Name: Rename-Device.ps1
+Purpose: To automate the device renaming process using an external API.
 #>
 
 [cmdletbinding()]
