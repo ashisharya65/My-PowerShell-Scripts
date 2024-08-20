@@ -32,8 +32,9 @@ This command runs the script with default parameters.
 
 .NOTES
 Version: 1.0
-Script Name: Rename-Device.ps1
-Purpose: To automate the device renaming process using an external API.
+Script Name: 
+Purpose: Creating scheduled tasks to automatically reboot the device post ESP process completion.
+
 #>
 
 [cmdletbinding()]
