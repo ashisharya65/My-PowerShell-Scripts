@@ -32,10 +32,10 @@ This command runs the script with default parameters.
 
 .NOTES
 Version: 1.0
-Script Name: 
-Purpose: Creating scheduled tasks to automatically reboot the device post ESP process completion.
-
+Script Name: Install.ps1
+Purpose: Creating scheduled tasks to automatically reboot the device post Enrollment Status Page phase completion.
 #>
+
 
 [cmdletbinding()]
 # Variable declarations
@@ -53,7 +53,7 @@ param(
 Function Write-Log {
     param(
         [parameter(mandatory)]
-        [ValidateSet('Info','Error')]
+        [ValidateSet('Info', 'Error')]
         [String] $Level,
         
         [Parameter(mandatory)]
@@ -65,10 +65,10 @@ Function Write-Log {
 }
 
 # If the script the Post-ESPReboot, Post-ESPReboot-Notification scripts and the concerned folder are not there, create it.
-if(-not((Test-Path $PostESPRebootFolderPath) -and (Test-Path $PostESPRebootNotificationScriptPath) -and (Test-Path $PostESPRebootScriptPath) -and (Test-Path $LogFilePath))){
+if (-not((Test-Path $PostESPRebootFolderPath))) {
     
     Try {
-
+        New-Item -Path $PostESPRebootFolderPath -force -Itemtype 'Directory' -erroraction 'stop' | Out-Null
         New-Item -path $LogFilePath -Itemtype 'File' -force |  Out-Null
         Set-Content -Path $DetectionTag -Value "Installed" -erroraction 'Stop'
 
@@ -81,12 +81,11 @@ if(-not((Test-Path $PostESPRebootFolderPath) -and (Test-Path $PostESPRebootNotif
     }
 
     Try {
+        Copy-Item -Path ".\Post-ESPReboot.ps1" -Destination $PostESPRebootFolderPath -Force -erroraction 'stop'
+        Write-Log -Level 'Info' -Message "Copied the Post-ESPReboot script to the Post-ESPReboot folder."
 
-        Add-Content -path $PostESPRebootScriptPath -Value $PostESPRebootScriptContent -Force -ErrorAction 'Stop'
-        Write-Log -Level 'Info' -Message "Post-ESPReboot script was not there. Hence, created the script and added the code to it."
-        
-        Add-Content -path $PostESPRebootNotificationScriptPath -Value $PostESPRebootNotificationScriptContent -Force -ErrorAction 'Stop'
-        Write-Log -Level 'Info' -Message "Post-ESPReboot-Notification script was not there. Hence, created the script and added the code to it."
+        Copy-Item -Path ".\Post-ESPReboot-Notification.ps1" -Destination $PostESPRebootFolderPath -Force -erroraction 'stop'
+        Write-Log -Level 'Info' -Message "Copied the Post-ESPReboot-Notification script to the Post-ESPReboot folder." 
     }
     catch {
         $err = $_.Exception.Message
@@ -96,11 +95,11 @@ if(-not((Test-Path $PostESPRebootFolderPath) -and (Test-Path $PostESPRebootNotif
 
 
 # Registering the scheduled task for both Post-ESPReboot and Post-ESPReboot-Notification
-Try{
+Try {
     Register-ScheduledTask -xml (Get-Content '.\Post-ESPReboot.xml' | Out-String) -TaskName "Post-ESPReboot" -Force -erroraction 'Stop' | Out-Null
     Write-Log -Level 'Info' -Message "Post-ESPReboot scheduled task was created successfully."
 }
-Catch{
+Catch {
     $err = $_.Exception.Message
     Write-Log -Level 'Error' -Message "Unable to create the Post-ESPReboot scheduled task: $err."
 }
