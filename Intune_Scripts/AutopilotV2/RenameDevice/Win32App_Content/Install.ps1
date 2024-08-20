@@ -11,12 +11,6 @@ The folder path where the Post-ESPReboot scripts and logs are stored. Defaults t
 .PARAMETER LogFilePath
 The file path for the log file where script execution details are recorded. Defaults to a log file within the PostESPRebootFolderPath.
 
-.PARAMETER PostESPRebootNotificationScriptPath
-The file path for the Post-ESPReboot-Notification script.
-
-.PARAMETER PostESPRebootScriptPath
-The file path for the Post-ESPReboot script.
-
 .PARAMETER PostESPRebootSchdTask
 The name of the scheduled task for the Post-ESPReboot script.
 
