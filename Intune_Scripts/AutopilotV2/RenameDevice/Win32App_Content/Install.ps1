@@ -33,7 +33,7 @@ This command runs the script with default parameters.
 .NOTES
 Version: 1.0
 Script Name: Install.ps1
-Purpose: Creating scheduled tasks to automatically reboot the device post Enrollment Status Page phase completion.
+Purpose: Creating scheduled tasks to automatically reboot reboot the device post Enrollment Status Page phase completion.
 #>
 
 
@@ -42,8 +42,6 @@ Purpose: Creating scheduled tasks to automatically reboot the device post Enroll
 param(
     [string] $PostESPRebootFolderPath = "C:\Temp\Post-ESPReboot",
     [string] $LogFilePath = $PostESPRebootFolderPath + "\Logs\Post-ESPReboot-InstallScriptLog.log",
-    [string] $PostESPRebootNotificationScriptPath = $PostESPRebootFolderPath + "\Post-ESPReboot-Notification.ps1",
-    [string] $PostESPRebootScriptPath = $PostESPRebootFolderPath + "\Post-ESPReboot.ps1",
     [string] $PostESPRebootSchdTask = "Post-ESPReboot",
     [string] $PostESPRebootNotificationSchdTask = "Post-ESPReboot-Notification",
     [string] $DetectionTag = $PostESPRebootFolderPath + "\DetectionTag.ps1.tag"
@@ -68,7 +66,7 @@ Function Write-Log {
 if (-not((Test-Path $PostESPRebootFolderPath))) {
     
     Try {
-        New-Item -Path $PostESPRebootFolderPath -force -Itemtype 'Directory' -erroraction 'stop' | Out-Null
+        New-Item -Path $PostESPRebootFolderPath -Itemtype 'Directory' -force -erroraction 'stop' | Out-Null
         New-Item -path $LogFilePath -Itemtype 'File' -force |  Out-Null
         Set-Content -Path $DetectionTag -Value "Installed" -erroraction 'Stop'
 
