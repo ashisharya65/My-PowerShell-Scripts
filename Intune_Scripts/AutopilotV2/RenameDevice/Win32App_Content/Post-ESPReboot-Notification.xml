@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Date>2024-08-18T22:45:00.0769433</Date>
+    <Date>2024-08-29T06:02:04.0769433</Date>
     <Author>Ashish Arya</Author>
     <URI>\Post-ESPReboot-Notification</URI>
   </RegistrationInfo>
   <Triggers>
     <TimeTrigger>
-      <StartBoundary>2024-08-18T22:45:00</StartBoundary>
+      <StartBoundary>2024-08-29T03:59:51</StartBoundary>
       <Enabled>true</Enabled>
     </TimeTrigger>
   </Triggers>
   <Principals>
     <Principal id="Author">
-      <GroupId>S-1-5-32-545</GroupId>
+      <GroupId>S-1-5-11</GroupId>
       <RunLevel>LeastPrivilege</RunLevel>
     </Principal>
   </Principals>
   <Settings>
     <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
-    <DisallowStartIfOnBatteries>true</DisallowStartIfOnBatteries>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
     <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
     <AllowHardTerminate>true</AllowHardTerminate>
     <StartWhenAvailable>false</StartWhenAvailable>
@@ -38,8 +38,8 @@
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>Powershell.exe</Command>
-      <Arguments>-Noprofile -Executionpolicy Unrestricted -file 'C:\Temp\Post-ESPReboot\Post-ESPReboot-Notification.ps1'</Arguments>
+      <Command>powershell.exe</Command>
+      <Arguments>-executionpolicy "Bypass" -File "C:\Temp\Rename-Device\Scripts\Toast.ps1"</Arguments>
     </Exec>
   </Actions>
 </Task>
