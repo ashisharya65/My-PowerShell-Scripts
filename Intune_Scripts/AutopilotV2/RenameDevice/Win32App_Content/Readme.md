@@ -12,3 +12,6 @@ During my testing related to the Autopilot V2 profile, also known as the **Windo
 - Once the second scheduled task, `Post-ESPReboot-Notification`, is completed, control returns to the `Reboot.ps1` script (associated with the first scheduled task, `Post-ESPReboot`).
 - The script then checks whether the `Reboot.ps1.tag` file was created. If the file exists, the script will restart the machine; otherwise, it will log a message indicating that the user clicked the No button and no restart will occur.
 
+Below is the screenshot of the popup window user will be getting - 
+
+<img width="436" alt="image" src="https://github.com/user-attachments/assets/e37419b1-7fd3-4560-acc4-6e4ca938d21d">
