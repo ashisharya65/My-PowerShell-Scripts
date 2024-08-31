@@ -59,7 +59,7 @@ if (-not(Test-Path $LogFilePath)) {
     Try {
         # Create the log file and log the start of the script.
         New-Item -path $LogFilePath -Itemtype "File" -force -erroraction "stop" | Out-Null
-        Write-Log -Level "Info" -Message "Script execution started."
+        Write-Log -Level "Info" -Message "Script execution starts here."
         Write-Log -Level "Info" -Message "Log file created at '$($LogFilePath)' path."
     }
     Catch {
@@ -74,7 +74,7 @@ if (-not(Test-Path $LogFilePath)) {
 [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        Title="Your device needs a reboot !!!" Height="170" Width="515" WindowStartupLocation="CenterScreen" Foreground="#000000" Background="#7199D7" FontSize="16" FontFamily="Cambria">
+        Title="Your device needs a reboot !!!" Height="170" Width="600" WindowStartupLocation="CenterScreen" Foreground="#000000" Background="#7199D7" FontSize="16" FontFamily="Cambria">
     <Grid>
         <!-- TextBlock for the main message -->
         <TextBlock TextAlignment="Center" VerticalAlignment="Top" Margin="10" Foreground="#000000" FontSize="16">
@@ -83,7 +83,9 @@ if (-not(Test-Path $LogFilePath)) {
             <LineBreak/>
             <Run FontSize="16">Click</Run>
             <Run FontSize="16" xml:space="preserve" Foreground="Blue"> Yes </Run> <!-- Bold "now" text -->
-            <Run FontSize="16" Foreground="#000000">to reboot your device or </Run>
+            <Run FontSize="16" Foreground="#000000">to reboot your device in next</Run>
+            <Run FontSize="16" xml:space="preserve" Foreground="Blue"> 5 mins </Run>
+            <Run FontSize="16" Foreground="#000000">or click </Run>
             <Run FontSize="16" xml:space="preserve" Foreground="Blue"> No </Run> <!-- Bold "now" text -->
             <Run FontSize="16" Foreground="#000000">to close the window.</Run>
         </TextBlock>
@@ -127,8 +129,8 @@ $YesButton.Add_Click({
         # Create the detection tag file and log the user's decision to reboot.
         New-Item -path $DetectionTagFilePath -ItemType "File" -force | Out-Null
         Write-Log -Level "Info" -Message "The user clicked on 'Yes' button."
-        Write-Log -Level "Info" -Message "Script execution ended."
         Write-Log -Level "Info" -Message "The detection tag file also got created at '$($DetectionTagFilePath)' path."
+        Write-Log -Level "Info" -Message "Script execution ends here."
         $form.close() 
     })
 
@@ -136,7 +138,7 @@ $YesButton.Add_Click({
 $NoButton.Add_Click({
         # Log the user's decision not to reboot and close the window.
         Write-Log -Level "Info" -Message "The user clicked on 'No' button so no reboot will happen."
-        Write-Log -Level "Info" -Message "Script execution ended."
+        Write-Log -Level "Info" -Message "Script execution ends here."
         $form.close() 
     })
 
