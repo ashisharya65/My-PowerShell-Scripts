@@ -1,11 +1,13 @@
-# Renaming device during Autopilot V2 profile deployment
+# Renaming Device During Autopilot V2 Profile Deployment
 
-- With my testing related to Autopilot V2 profile aka <b>Windows Autopilot device preparation</b> profile, we got no way to rename the device while it is enrolling to Intune.
-- We used few customized ways to rename the device during the Intune Enrollment status page (ESP) process.
-- Renaming the device still requires a restart from user end.
-- If the device gets restarted during the ESP phase, at user ESP, user will again have to authenticate to the device in order to proceed with the rest of the pending steps in ESP.
-- So, with this way, we are coming up with creating two schedule tasks.
-- One of the scheduled task will monitor the Event id - 4725 (that is logged when the <b>defaultuser0</b> account gets disabled) means wgenever the ESP phase is completed and invoke the Post-ESPReboot script.
-- Second scheduled task is response for showing one pop window to save all the work before restart the machine post completion of ESP.
-- Here, one way is to deploy a Win32 app storing all the necessary scripts and scheduled task XMLs.
-- Second way is to deploy a single script to create the concerned scheduled tasks.
+- During my testing related to the Autopilot V2 profile, also known as the **Windows Autopilot device preparation** profile, I found that there is no native option to rename the device while it is enrolling into Intune.
+- We employed a customized method to rename the device during the Intune Enrollment Status Page (ESP) process, as renaming the device still requires a restart initiated by the user.
+- In this approach, we will create a Win32 app that sets up two scheduled tasks.
+- The first scheduled task, `Post-ESPReboot`, monitors `Event ID 4725` (which is logged when the `defaultuser0` account is disabled). This indicates that the ESP phase is complete and triggers the `Reboot.ps1` script.
+- The `Reboot.ps1` script then triggers the second scheduled task, `Post-ESPReboot-Notification`, which runs another script called `Toast.ps1`.
+- The `Reboot.ps1` script waits for the `Post-ESPReboot-Notification` scheduled task to complete.
+- The second scheduled task, `Post-ESPReboot-Notification`, displays a pop-up window with two options: clicking the `Yes` button or the `No` button.
+- If the user clicks the `Yes` button, a `Reboot.ps1.tag` file is created in the specified path. This tag file is used as a detection file for the Win32 app.
+- If the user clicks the `No` button, no action is taken, and the GUI window closes.
+- Once the second scheduled task, `Post-ESPReboot-Notification`, is completed, control returns to the `Reboot.ps1` script (associated with the first scheduled task, `Post-ESPReboot`).
+- The script then checks whether the `Reboot.ps1.tag` file was created. If the file exists, the script will restart the machine; otherwise, it will log a message indicating that the user clicked the No button and no restart will occur.
