@@ -24,7 +24,7 @@ Date: [31-Aug-2024]
 Version: 1.0
 
 .EXAMPLE
-PS C:\> .\Reboot.ps1
+PS C:\> .\Handle-Reboot.ps1
 This command executes the script, logging its progress, handling the reboot and notification tasks, and conditionally rebooting the device based on user input.
 
 #>
@@ -56,7 +56,7 @@ if (-not(Test-Path $LogFilePath)) {
     Try {
         # Create the log file and log the script start.
         New-Item -path $LogFilePath -Itemtype "File" -force -erroraction "stop" | Out-Null
-        Write-Log -Level "Info" -Message "Script execution started."
+        Write-Log -Level "Info" -Message "Script execution starts here."
         Write-Log -Level "Info" -Message "Log file created at '$($LogFilePath)'."
     }
     Catch {
@@ -95,7 +95,6 @@ Write-Log -Level "Info" -Message "The scheduled task : $($RebootNotificationSchd
 do {
     $taskStatus = (Get-ScheduledTask -TaskName $RebootNotificationSchdTaskName).State
     Write-Log -Level "Info" -Message "Waiting for the scheduled task to complete. Current status: $taskStatus."
-    Start-Sleep -Seconds 5
 } while ($taskStatus -eq "Running")
 
 Write-Log -Level "Info" -Message "The scheduled task : $($RebootNotificationSchdTaskName) has completed."
@@ -108,12 +107,14 @@ if (Test-Path -Path $DetectionTagFilePath) {
 
     # Log user confirmation and reboot the device.
     Write-Log -Level "Info" -Message "The user clicked on 'Yes' button."
-    Write-Log -Level "Info" -Message "Hence rebooting the device."
-    Write-Log -Level "Info" -Message "Script execution ended."
+    Write-Log -Level "Info" -Message "Script execution ends here."
+    Write-Log -Level "Info" -Message "Sleeping for 5 mins."
+    Start-Sleep -Seconds 300
+    Write-Log -Level "Info" -Message "Rebooting the device."
     Restart-Computer -Force
 }
 else {
     # Log that the user declined the reboot, and end the script without rebooting.
     Write-Log -Level "Info" -Message "The user clicked on 'No' button so no reboot will happen."
-    Write-Log -Level "Info" -Message "Script execution ended."
+    Write-Log -Level "Info" -Message "Script execution ends here."
 }
