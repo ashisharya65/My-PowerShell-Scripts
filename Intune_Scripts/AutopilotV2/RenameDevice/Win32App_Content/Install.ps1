@@ -1,108 +1,129 @@
-<# 
+<#
 .SYNOPSIS
-This script automates the setup and registration of scheduled tasks for Post-ESPReboot and Post-ESPReboot-Notification, ensuring all necessary scripts and folders are in place.
+This script automates the creation and execution of scheduled tasks to reboot a device and display a notification after the device exits the Enrollment Status Page (ESP) phase in Windows Autopilot.
 
 .DESCRIPTION
-The script initializes necessary variables and checks for the existence of required files and directories. If the specified Post-ESPReboot and Post-ESPReboot-Notification scripts do not exist, it creates them and logs all actions to a designated log file. Additionally, it registers scheduled tasks using predefined XML configurations. Error handling and logging are implemented to track the script's progress and capture any issues.
+The script performs the following operations:
+1. Initializes paths for logs, scripts, and scheduled tasks.
+2. Defines a logging function to record information and errors.
+3. Creates necessary directories and log files if they do not exist.
+4. Copies reboot and notification scripts, along with their associated scheduled task XML files, to the designated directories.
+5. Registers the scheduled tasks using the copied XML files.
+6. Checks whether the device has exited the ESP phase by detecting a specific event in the Security log.
+7. If the device has exited the ESP phase, the script triggers the scheduled reboot task; otherwise, it logs that the device is still in the ESP phase.
 
-.PARAMETER PostESPRebootFolderPath
-The folder path where the Post-ESPReboot scripts and logs are stored. Defaults to 'C:\Temp\Post-ESPReboot'.
+.PARAMETER Level
+The log level for the `Write-Log` function, either "Info" or "Error".
 
-.PARAMETER LogFilePath
-The file path for the log file where script execution details are recorded. Defaults to a log file within the PostESPRebootFolderPath.
-
-.PARAMETER PostESPRebootSchdTask
-The name of the scheduled task for the Post-ESPReboot script.
-
-.PARAMETER PostESPRebootNotificationSchdTask
-The name of the scheduled task for the Post-ESPReboot-Notification script.
-
-.PARAMETER DetectionTag
-The path to the detection tag file used to mark the installation status.
-
-.EXAMPLE
-.\Install.ps1
-This command runs the script with default parameters.
+.PARAMETER Message
+The message to log, associated with the specified log level.
 
 .NOTES
+Author: Ashish Arya
+Date: 31-Aug-2024
 Version: 1.0
-Script Name: Install.ps1
-Purpose: Creating scheduled tasks to automatically reboot reboot the device post Enrollment Status Page phase completion.
+
+.EXAMPLE
+PS C:\> .\Rename-Device.ps1
+This command executes the script, creating the necessary files and folders, copying the required scripts, and registering the scheduled tasks.
+
+.EXAMPLE
+PS C:\> Write-Log -Level "Info" -Message "This is a test log entry."
+This command logs an informational message to the log file.
+
 #>
 
+# Set up folder paths and filenames for logs, scripts, and scheduled tasks.
+$LogFolderPath = "C:\Temp\Rename-Device"
+$LogFilePath = $LogFolderPath + "\Main.log"
+$ScriptsFolderPath = $LogFolderPath + "\Scripts"
+$SchdTaskFolderPath = $LogFolderPath + "\SchdTasks"
+$RebootScriptPath = $ScriptsFolderPath + "\Reboot.ps1"
+$RebootNotificationScriptPath = $ScriptsFolderPath + "\Toast.ps1"
+$RebootSchdTaskPath = $SchdTaskFolderPath + "\RebootSchdTask.xml"
+$RebootNotificationSchdTaskPath = $SchdTaskFolderPath + "\ToastSchdTask.xml"
+$RebootSchdTaskName = "Post-ESPReboot"
 
-[cmdletbinding()]
-# Variable declarations
-param(
-    [string] $PostESPRebootFolderPath = "C:\Temp\Post-ESPReboot",
-    [string] $LogFilePath = $PostESPRebootFolderPath + "\Logs\Post-ESPReboot-InstallScriptLog.log",
-    [string] $PostESPRebootSchdTask = "Post-ESPReboot",
-    [string] $PostESPRebootNotificationSchdTask = "Post-ESPReboot-Notification",
-    [string] $DetectionTag = $PostESPRebootFolderPath + "\DetectionTag.ps1.tag"
-)
-
-# Function for logging
+# Define a function for logging messages to the log file with a timestamp.
 Function Write-Log {
     param(
-        [parameter(mandatory)]
-        [ValidateSet('Info', 'Error')]
-        [String] $Level,
-        
-        [Parameter(mandatory)]
+        [Parameter(Mandatory)]
+        [ValidateSet("Info", "Error")]
+        [string] $Level,
+        [Parameter(Mandatory)]
         [string] $Message
     )
-    $CurrentDate = Get-Date -format "dd-MM-yyyy hh:mm:ss"
-    $logmessage = "$($CurrentDate) [$Level] - $Message"
-    Add-Content -path $LogFilePath -Value $logmessage -force
+    $timestamp = Get-Date -Format "dd-MM-yyyy HH:mm:ss"
+    $logMessage = "$timestamp [$Level] - $Message"
+    Add-Content -Path $LogFilePath -Value $logMessage -force
 }
 
-# If the script the Post-ESPReboot, Post-ESPReboot-Notification scripts and the concerned folder are not there, create it.
-if (-not((Test-Path $PostESPRebootFolderPath))) {
-    
+# Check if log file and necessary folders exist. If not, create them.
+if (-not((Test-Path $LogFilePath) -and (Test-Path $ScriptsFolderPath) -and (Test-Path $SchdTaskFolderPath))) {
     Try {
-        New-Item -Path $PostESPRebootFolderPath -Itemtype 'Directory' -force -erroraction 'stop' | Out-Null
-        New-Item -path $LogFilePath -Itemtype 'File' -force |  Out-Null
-        Set-Content -Path $DetectionTag -Value "Installed" -erroraction 'Stop'
-
-        Write-Log -Level 'Info' -Message "Script execution started."
-        Write-Log -Level 'Info' -Message "Successfully created the Post-ESPReboot folder and detection tag file."
+        New-Item -path $LogFilePath -Itemtype "File" -force -erroraction "stop" | Out-Null
+        New-Item -path $ScriptsFolderPath -Itemtype "Directory" -force -erroraction "stop" | Out-Null
+        New-Item -path $SchdTaskFolderPath -Itemtype "Directory" -force -erroraction "stop" | Out-Null
+        Write-Log -Level "Info" -Message "Script execution starts here."
+        Write-Log -Level "Info" -Message "Log file is created at '$($LogFilePath)' path."
+        Write-Log -Level "Info" -Message "Scripts folder is created at '$($ScriptsFolderPath)' path."
+        Write-Log -Level "Info" -Message "Scheduled tasks folder is created at '$($SchdTaskFolderPath)' path."
     }
     Catch {
-        $err = $_.Exception.Message
-        Write-Log -Level 'Error' -Message "Unable to create the log file as well as the device rename tag file: $err."
+        $err = $_.exception.message
+        Write-Log -Level "Error" -Message "Error: Unable to create the log file, Scripts and Schedule task folders.$err."
     }
+}
 
+# Check if the reboot script, notification script, and associated XML files exist. If not, copy them from the source.
+if (-not((Test-Path $RebootScriptPath) -and (Test-Path $RebootNotificationScriptPath) -and (Test-Path $RebootSchdTaskPath) -and (Test-Path $RebootNotificationSchdTaskPath))) {
+    
+    # Copy reboot and notification scripts along with their XML files to the target directories.
     Try {
-        Copy-Item -Path ".\Post-ESPReboot.ps1" -Destination $PostESPRebootFolderPath -Force -erroraction 'stop'
-        Write-Log -Level 'Info' -Message "Copied the Post-ESPReboot script to the Post-ESPReboot folder."
+        Copy-Item -Path ".\Reboot.ps1" -Destination $RebootScriptPath -Force -ErrorAction 'Stop'
+        Copy-Item -Path ".\Toast.ps1" -Destination $RebootNotificationScriptPath -Force -ErrorAction 'Stop'
+        Copy-Item -Path ".\RebootSchdTask.xml" -Destination $RebootSchdTaskPath -Force -ErrorAction 'Stop'
+        Copy-Item -Path ".\ToastSchdTask.xml" -Destination $RebootNotificationSchdTaskPath -Force -ErrorAction 'Stop'
 
-        Copy-Item -Path ".\Post-ESPReboot-Notification.ps1" -Destination $PostESPRebootFolderPath -Force -erroraction 'stop'
-        Write-Log -Level 'Info' -Message "Copied the Post-ESPReboot-Notification script to the Post-ESPReboot folder." 
+        # Log the successful copying of scripts and XML files.
+        Write-Log -Level "Info" -Message "All Scripts are copied under $($ScriptsFolderPath) folder path."
+        Write-Log -Level "Info" -Message "All Scheduled tasks are copied under $($SchdTaskFolderPath) folder path."
     }
-    catch {
+    Catch {
+        # Log an error message if the copying fails.
         $err = $_.Exception.Message
-        Write-Log -Level 'Error' -Message "Unable to create the Post-ESPReboot and Post-ESPReboot-Notification scripts as well the concerned folder. : $err."
+        Write-Log -Level "Error" -Message "ERROR: Unable to copy the scripts and schedule tasks to the concerned directories. '$err.'"
+    }
+
+    # Register the scheduled tasks using the copied XML files.
+    Try {
+        Register-ScheduledTask -xml (Get-Content '.\RebootSchdTask.xml' | Out-String) -TaskName "Post-ESPReboot" -Force -ErrorAction 'Stop' | Out-Null
+        Register-ScheduledTask -xml (Get-Content '.\ToastSchdTask.xml' | Out-String) -TaskName "Post-ESPReboot-Notification" -Force -ErrorAction 'Stop' | Out-Null
+
+        # Log the successful registration of the scheduled tasks.
+        Write-Log -Level "Info" -Message "Reboot and its notification scheduled tasks got successfully created."
+        Write-Log -Level "Info" -Message "Script execution ended."
+    }
+    Catch {
+        # Log an error message if registration of scheduled tasks fails.
+        $err = $_.Exception.Message
+        Write-Log -Level "Error" -Message "ERROR: Unable to register both the Reboot and its notification scheduled tasks. '$err.'"
     }
 }
 
+# Check if the device has exited the ESP phase by looking for a specific event in the Security log.
+$DisableAcctEvent = Get-WinEvent -FilterHashtable @{LogName = "Security"; Id = "4725" } -ErrorAction "SilentlyContinue" | `
+    Where-Object { $_.Message -match "Account Name:\s*defaultuser0" } | Select-Object -First 1
 
-# Registering the scheduled task for both Post-ESPReboot and Post-ESPReboot-Notification
-Try {
-    Register-ScheduledTask -xml (Get-Content '.\Post-ESPReboot.xml' | Out-String) -TaskName "Post-ESPReboot" -Force -erroraction 'Stop' | Out-Null
-    Write-Log -Level 'Info' -Message "Post-ESPReboot scheduled task was created successfully."
+# If the event is found, the device has exited ESP; start the reboot scheduled task.
+if ($DisableAcctEvent) {
+    Write-Log -Level "Info" -Message "The device has already gone through the ESP phase."
+    Start-ScheduledTask -TaskName $RebootSchdTaskName
+    Write-Log -Level "Info" -Message "The scheduled task : $($RebootSchdTaskName) was successfully started."
+    Write-Log -Level "Info" -Message "Script execution ends here."
 }
-Catch {
-    $err = $_.Exception.Message
-    Write-Log -Level 'Error' -Message "Unable to create the Post-ESPReboot scheduled task: $err."
+else {
+    # If the event is not found, the device is still in ESP.
+    Write-Log -Level "Info" -Message "The device still is in the ESP phase."
+    Write-Log -Level "Info" -Message "Script execution ends here."
 }
-
-Try {
-    Register-ScheduledTask -xml (Get-Content '.\Post-ESPReboot-Notification.xml' | Out-String) -TaskName "Post-ESPReboot-Notification" -Force -erroraction 'Stop' | Out-Null
-    Write-Log -Level 'Info' -Message "Post-ESPReboot-Notification scheduled task was created successfully."
-}
-Catch {
-    $err = $_.Exception.Message
-    Write-Log -Level 'Error' -Message "Unable to create the Post-ESPReboot-Notification scheduled task : $err."
-}
-
-Write-Log -Level 'Info' -Message "Script execution ended."
