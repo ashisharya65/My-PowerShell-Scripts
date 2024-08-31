@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Date>2024-08-18T22:45:00.4766991</Date>
+    <Date>2024-08-29T05:53:00.4766991</Date>
     <Author>Ashish Arya</Author>
     <URI>\Post-ESPReboot</URI>
   </RegistrationInfo>
@@ -41,7 +41,7 @@
   <Actions Context="Author">
     <Exec>
       <Command>powershell.exe</Command>
-      <Arguments>-noprofile -executionpolicy bypass -file 'C:\Temp\PostESPReboot\Post-ESPReboot.ps1'</Arguments>
+      <Arguments>-executionpolicy "Bypass" -File "C:\Temp\Rename-Device\Scripts\Reboot.ps1"</Arguments>
     </Exec>
   </Actions>
 </Task>
