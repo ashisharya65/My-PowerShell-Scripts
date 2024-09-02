@@ -1,30 +1,29 @@
 <#
 .SYNOPSIS
-    This script updates the disk SKU of Azure Virtual Machines (VMs) from their current type to Premium SSD.
+Updates the disk SKU type for a list of Azure VMs.
 
 .DESCRIPTION
-    The script reads a list of VM names from a text file and updates each VM's OS disk SKU to Premium SSD (Premium_LRS).
-    It checks if the VM is deallocated before making changes to ensure the disk can be updated.
-    The script is particularly useful for batch updating multiple VMs within a specific resource group.
+This script reads VM names from a text file and updates their OS disk SKU type to a specified value.
+
+.PARAMETER diskSKU
+Specifies the disk SKU type to be applied. Default is "StandardSSD_ZRS".
 
 .PARAMETER rgname
-    The name of the resource group where the VMs reside.
+The name of the Azure resource group where the VMs are located.
 
 .PARAMETER textfilepath
-    The file path to the text file containing the list of VM names.
-
-.PARAMETER vmnamelist
-    The list of VM names extracted from the text file.
+The path to the text file containing the list of VM names.
 
 .EXAMPLE
-    # Run the script and follow the prompts:
-    # This will update the disk SKU for all VMs listed in devicelist.txt to Premium SSD
-    .\UpdateVMDiskSKU.ps1
+# Run the script and follow the prompts:
+# This will update the disk SKU for all VMs listed in devicelist.txt to Premium SSD
+.\Update-VMDiskSKU.ps1
 
 .NOTES
-    - Ensure that the VMs are compatible with Premium SSDs and that the VM size supports Premium SSDs.
-    - This script requires the Azure PowerShell module.
-#>
+Author: Ashish Arya
+Date: 02-Sept-2024
+    
+#>  
 
 # Variables declaration with user input
 $rgname = Read-Host -Prompt "Enter the Resource group name where all the VMs are residing"
@@ -76,6 +75,7 @@ if (-Not (Test-Path -Path $textfilepath)) {
 
 # Process each VM name from the file
 $vmnamelist = Get-Content -Path $textfilepath
+
 Foreach ($vmname in $vmnamelist) {
     if (-Not [string]::IsNullOrWhiteSpace($vmname)) {
         Update-AzureVMDiskSKU -vmname $vmname -diskskutype $diskSKU
