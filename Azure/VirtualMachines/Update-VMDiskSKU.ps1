@@ -38,6 +38,7 @@ Function Update-AzureVMDiskSKU {
         [string]$vmname,
 
         [Parameter(Mandatory)]
+        [ValidateSet("Standard_LRS","StandardSSD_LRS","StandardSSD_ZRS","PremiumSSD_LRS","PremiumSSD_ZRS")]
         [string]$diskskutype
     )
     
