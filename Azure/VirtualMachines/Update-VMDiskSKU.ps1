@@ -16,7 +16,7 @@ The path to the text file containing the list of VM names.
 
 .EXAMPLE
 # Run the script and follow the prompts:
-# This will update the disk SKU for all VMs listed in devicelist.txt to Premium SSD
+# This will update the disk SKU for all VMs listed in devicelist.txt to the specified disk SKU.
 .\Update-VMDiskSKU.ps1
 
 .NOTES
