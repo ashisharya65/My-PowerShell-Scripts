@@ -26,53 +26,59 @@
     - This script requires the Azure PowerShell module.
 #>
 
-# Define the variables
+# Variables declaration with user input
 $rgname = Read-Host -Prompt "Enter the Resource group name where all the VMs are residing"
-$textfilepath = $psscriptroot + "\devicelist.txt"
-$vmnamelist = Get-Content -path $textfilepath
+$textfilepath = Join-Path -Path $PSScriptRoot -ChildPath "devicelist.txt"
+$diskSKU = "StandardSSD_LRS"
 
-# Check if the file exists
-if (-Not (Test-Path -Path $textfilepath)) {
-    Write-Error "The file $textfilepath does not exist. Please ensure the file path is correct."
-    exit
-}
 
-# Function to update Azure VM disk size
+# Function to Update Azure VM Disk SKU
 Function Update-AzureVMDiskSKU {
     param(
         [Parameter(Mandatory)]
-        $vmname
+        [string]$vmname,
+
+        [Parameter(Mandatory)]
+        [string]$diskskutype
     )
     
     try {
         # Retrieve the VM details along with its power state
-        $vm = Get-AzVM -ResourceGroupName $rgname -Name $vmname -Status -ErrorAction Stop
+        $vm = Get-AzVM -ResourceGroupName $rgname -Name $vmname -Status -ErrorAction "Stop"
         
         # Check if the VM is not deallocated; if it's running or stopped, deallocate it
         if ($vm.PowerState -ne "VM deallocated") {
-            Stop-AzVM -ResourceGroupName $rgname -Name $vmname -Force -ErrorAction Stop
+            Stop-AzVM -ResourceGroupName $rgname -Name $vmname -Force -ErrorAction "Stop"
+        }
+        else {
+            Write-Output "The VM '$vmname' is already in 'VM deallocated' state." 
         }
 
         # Get the OS Disk details for the VM
-        $osDisk = Get-AzDisk -ResourceGroupName $rgname -DiskName $vm.StorageProfile.OsDisk.Name -ErrorAction Stop
+        $osDisk = Get-AzDisk -ResourceGroupName $rgname -DiskName $vm.StorageProfile.OsDisk.Name -ErrorAction "Stop"
 
-        # Update the disk SKU to Premium SSD (Premium_LRS)
-        $osDisk.Sku.Name = "Premium_LRS"
-        Update-AzDisk -ResourceGroupName $rgname -DiskName $osDisk.Name -Disk $osDisk -ErrorAction Stop
-
-        Write-Output "Successfully updated disk SKU for $($vmname) VM to Premium SSD."
+        # Update the disk SKU
+        $osDisk.Sku.Name = $diskskutype
+        $null = Update-AzDisk -ResourceGroupName $rgname -DiskName $osDisk.Name -Disk $osDisk -ErrorAction "Stop" | Out-Null
+        Write-Output "The OS disk SKU for VM '$vmname' has been updated to '$($osDisk.Sku.Name)' type."
 
     }
     catch {
-        Write-Error "Failed to update disk SKU for VM: $vmname.`nError: $_"
+        Write-Error "Failed to update disk SKU for VM: '$vmname'.`nError: $_"
     }
-
 }
 
-# Looping through all VM names and updating their disk SKU to premium SSD
+# Check if the file exists
+if (-Not (Test-Path -Path $textfilepath)) {
+    Write-Error "The file '$textfilepath' does not exist. Please ensure the file path is correct."
+    exit
+}
+
+# Process each VM name from the file
+$vmnamelist = Get-Content -Path $textfilepath
 Foreach ($vmname in $vmnamelist) {
     if (-Not [string]::IsNullOrWhiteSpace($vmname)) {
-        Update-AzureVMDiskSKU -vmname $vmname
+        Update-AzureVMDiskSKU -vmname $vmname -diskskutype $diskSKU
     }
     else {
         Write-Error "VM name is empty in the file. Skipping entry."
