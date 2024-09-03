@@ -59,7 +59,7 @@ Function Update-AzureVMDiskSKU {
 
         # Update the disk SKU
         $osDisk.Sku.Name = $diskskutype
-        $null = Update-AzDisk -ResourceGroupName $rgname -DiskName $osDisk.Name -Disk $osDisk -ErrorAction "Stop" | Out-Null
+        Update-AzDisk -ResourceGroupName $rgname -DiskName $osDisk.Name -Disk $osDisk -ErrorAction "Stop" | Out-Null
         Write-Output "The OS disk SKU for VM '$vmname' has been updated to '$($osDisk.Sku.Name)' type."
 
     }
