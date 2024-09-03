@@ -106,14 +106,10 @@ Write-Log -Level 'Info' -Message "Script execution started."
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         Title="Device is restarting ⚠️" Height="200" Width="400" WindowStartupLocation="CenterScreen" Foreground="#000000" Background="#7199D7" FontSize="16" FontFamily="Cambria"
-        Icon="C:\Users\aarya1\Downloads\Bechtel.ico"
         Topmost="True">
     <Grid>
         <!-- StackPanel for the icon and text -->
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
-            <!-- Image control to display a larger version of the icon -->
-            <Image Source="C:\Users\aarya1\Downloads\Bechtel_Logo_RGB.ico" Width="64" Height="64" Margin="0,0,0,10"/>
-            
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">            
             <!-- TextBlock for the main message -->
             <TextBlock TextAlignment="Center" Foreground="#000000" FontSize="16">
                 <Run FontSize="16">Your device is going to restart in </Run>
