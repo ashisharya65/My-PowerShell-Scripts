@@ -37,20 +37,44 @@ param (
     [string]$ReportFilePath
 )
 
-# Check if Microsoft.Graph module is installed
-if (-not (Get-Module -ListAvailable -Name Microsoft.Graph)) {
-    Write-Host "Microsoft.Graph module is not installed. Installing now..."
-    Install-Module Microsoft.Graph -Scope CurrentUser -Force
+# Ensure Microsoft.Graph module is available
+try {
+    if (-not (Get-Module -ListAvailable -Name Microsoft.Graph)) {
+        Write-Host "Microsoft.Graph module not found. Installing..."
+        Install-Module Microsoft.Graph -Scope CurrentUser -Force -ErrorAction Stop
+    }
+    Import-Module Microsoft.Graph -ErrorAction Stop
+}
+catch {
+    Write-Error "❌ Failed to install or import Microsoft.Graph module: $_"
+    exit 1
 }
 
-# Import the module
-Import-Module Microsoft.Graph
-
 # Connect to Microsoft Graph
-Connect-MgGraph -NoWelcome
+try {
+    Connect-MgGraph -NoWelcome -ErrorAction Stop
+}
+catch {
+    Write-Error "❌ Failed to connect to Microsoft Graph: $_"
+    exit 1
+}
 
 # Load user list from CSV
-$userlist = Import-Csv -Path $CSVUserFilePath
+try {
+    if (-not (Test-Path $CSVUserFilePath)) {
+        throw "CSV file not found at path: $CSVUserFilePath"
+    }
+
+    $userlist = Import-Csv -Path $CSVUserFilePath -ErrorAction Stop
+    if ($userlist.Count -eq 0) {
+        throw "CSV file is empty or improperly formatted."
+    }
+}
+catch {
+    Write-Error "❌ Error loading user list: $_"
+    exit 1
+}
+
 $totalUsers = $userlist.Count
 $deviceInfo = [System.Collections.Generic.List[Object]]@()
 
@@ -58,19 +82,22 @@ $deviceInfo = [System.Collections.Generic.List[Object]]@()
 for ($i = 0; $i -lt $totalUsers; $i++) {
     $user = $userlist[$i]
 
-    # Calculate and show progress
     $percentComplete = [math]::Round((($i + 1) / $totalUsers) * 100, 2)
     Write-Progress -Activity "Processing user $($user.UPN)" `
                    -Status "$percentComplete% complete" `
                    -PercentComplete $percentComplete
 
-    # Get device names assigned to the user
-    $devices = (Get-MgDeviceManagementManagedDevice -Filter "userPrincipalName eq '$($user.UPN)'").deviceName
+    try {
+        $devices = (Get-MgDeviceManagementManagedDevice -Filter "userPrincipalName eq '$($user.UPN)'").deviceName
+    }
+    catch {
+        Write-Warning "⚠️ Failed to retrieve devices for user $($user.UPN): $_"
+        $devices = @()
+    }
 
-    # Create output object
     $psobject = [PSCustomObject]@{
         UPN        = $user.UPN
-        DeviceName = if ($null -eq $devices) {
+        DeviceName = if ($null -eq $devices -or $devices.Count -eq 0) {
             "No Device Assigned in Intune"
         } else {
             $devices -join ", "
@@ -81,4 +108,11 @@ for ($i = 0; $i -lt $totalUsers; $i++) {
 }
 
 # Export results to CSV
-$deviceInfo | Export-Csv -Path $ReportFilePath -NoTypeInformation
+try {
+    $deviceInfo | Export-Csv -Path $ReportFilePath -NoTypeInformation -ErrorAction Stop
+    Write-Host "`n✅ Report successfully exported to: $ReportFilePath"
+}
+catch {
+    Write-Error "❌ Failed to export report: $_"
+    exit 1
+}
