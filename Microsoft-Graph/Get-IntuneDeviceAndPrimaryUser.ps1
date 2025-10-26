@@ -91,17 +91,18 @@ function Get-WinIntuneDevices {
     try {
         # API version and endpoint path for managed devices
         $apiversion = "beta"
-        $resource = "deviceManagement/managedDevices"
+        $apifilter = "deviceType eq 'desktop' or deviceType eq 'windowsRT' or deviceType eq 'winEmbedded' or deviceType eq 'surfaceHub'"
+        $resource = "deviceManagement/managedDevices?`$filter=$filter"
         $uri = "https://graph.microsoft.com/$apiversion/$resource"    
         $devices = @()
 
-        # Intune API pagination handling 
+        # Intune API pagination handling (keeps looping until no more results)
         do {
             # Query the API and retrieve a response page
             $response = Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get -ErrorAction Stop
             
             # Filter out devices that are running Windows OS
-            $devices += $response.value | Where-Object { $_.operatingSystem -eq "Windows" }
+            $devices += $response.value
             
             # Check for pagination link (if more data exists)
             $uri = $response."@odata.nextLink"
