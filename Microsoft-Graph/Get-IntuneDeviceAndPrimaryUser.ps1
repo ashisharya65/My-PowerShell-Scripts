@@ -92,7 +92,7 @@ function Get-WinIntuneDevices {
         # API version and endpoint path for managed devices
         $apiversion = "beta"
         $apifilter = "deviceType eq 'desktop' or deviceType eq 'windowsRT' or deviceType eq 'winEmbedded' or deviceType eq 'surfaceHub'"
-        $resource = "deviceManagement/managedDevices?`$filter=$filter"
+        $resource = "deviceManagement/managedDevices?`$filter=$apifilter"
         $uri = "https://graph.microsoft.com/$apiversion/$resource"    
         $devices = @()
 
