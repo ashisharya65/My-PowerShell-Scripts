@@ -79,8 +79,6 @@ Function Get-DeviceCorpIdFromIntune {
     try {
         $apiversion = "beta"
         $resource = "deviceManagement/importedDeviceIdentities?`$filter=contains(importedDeviceIdentifier,'$serialNumber')"
-        $resource = "deviceManagement/importedDeviceIdentities?`$filter=contains(importedDeviceIdentifier,'$serialNumber')"
-
         $uri = "https://graph.microsoft.com/$apiversion/$resource"
         $response = (Invoke-RestMethod -Uri $uri -Method GET -Headers $token ).Value.importedDeviceIdentifier
         return $response
