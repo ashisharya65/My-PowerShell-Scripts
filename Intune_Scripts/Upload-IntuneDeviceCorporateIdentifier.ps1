@@ -29,9 +29,9 @@
 #region Entra registered app details
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory = $false)][string]$TenantId,
-    [Parameter(Mandatory = $false)][string]$ClientId,
-    [Parameter(Mandatory = $false)][string]$ClientSecret
+    [Parameter(Mandatory)][string]$TenantId,
+    [Parameter(Mandatory)][string]$ClientId,
+    [Parameter(Mandatory)][string]$ClientSecret
 )
 #endregion
 
