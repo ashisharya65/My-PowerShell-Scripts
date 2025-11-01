@@ -21,7 +21,7 @@
     The client secret (app password) associated with the registered Azure AD application.
 
 .EXAMPLE
-    PS> .\Get-IntuneAppInstallationPerDeviceReport.ps1 -tenantid "tenant id" `
+    PS> .\Get-AppInstallationPerDeviceReport.ps1 -tenantid "tenant id" `
                                            -clientid "client id of your entra registered app" `
                                            -clientsecret "client-secret of your entra registered app"
 
