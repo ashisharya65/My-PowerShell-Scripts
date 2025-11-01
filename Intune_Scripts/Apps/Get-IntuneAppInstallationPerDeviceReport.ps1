@@ -21,7 +21,7 @@
     The client secret (app password) associated with the registered Azure AD application.
 
 .EXAMPLE
-    PS> .\IntuneAppInstallationPerDeviceReport.ps1 -tenantid "tenant id" `
+    PS> .\Get-IntuneAppInstallationPerDeviceReport.ps1 -tenantid "tenant id" `
                                            -clientid "client id of your entra registered app" `
                                            -clientsecret "client-secret of your entra registered app"
 
@@ -45,9 +45,9 @@
 
 [CmdletBinding()]
 param(
-    [string]$tenantid,
-    [string]$clientid,
-    [string]$clientsecret
+    [parameter(Mandatory)][string]$tenantid,
+    [parameter(Mandatory)][string]$clientid,
+    [parameter(Mandatory)][string]$clientsecret
 )
 
 # Function to display banner messages for readability
