@@ -50,9 +50,9 @@
 #region Entra registered app credentials
 [CmdletBinding()]
 param(
-    [parameter(Mandatory = $false)][string]$tenantid,
-    [parameter(Mandatory = $false)][string]$clientid,
-    [parameter(Mandatory = $false)][string]$clientsecret
+    [parameter(Mandatory)][string]$tenantid,
+    [parameter(Mandatory)][string]$clientid,
+    [parameter(Mandatory)][string]$clientsecret
 )
 #endregion
 
